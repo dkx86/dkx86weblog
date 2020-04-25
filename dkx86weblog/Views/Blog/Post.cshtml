@@ -1,0 +1,24 @@
+﻿@model dkx86weblog.Models.Post
+
+@{
+    ViewData["Title"] = @Model.Title;
+}
+
+<h1>@Model.Title</h1>
+
+<div>
+    <div class="text-muted">
+        <small>@Model.CreateTime</small>
+
+        @if (!@Model.CreateTime.Equals(@Model.UpdateTime))
+        {
+            <small>(upd: @Model.UpdateTime)</small>
+        }
+    </div>
+    
+
+    <hr />
+    <div class="col-12 text-dark nrw-card-bg p-3">
+        @Html.Raw(@Model.Body)
+    </div>
+</div>

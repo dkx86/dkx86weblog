@@ -12,6 +12,7 @@ using dkx86weblog.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using dkx86weblog.Services;
 
 namespace dkx86weblog
 {
@@ -34,6 +35,9 @@ namespace dkx86weblog
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddTransient<FileSystemService>();
+            services.AddTransient<ImageService>();
+            services.AddTransient<BlogService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

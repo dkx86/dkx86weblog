@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body>
+<body >
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -23,7 +23,22 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Blog" asp-action="Index">Blog</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+
+
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link  text-dark dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Contacts</a>
+                            <div class="dropdown-menu bg-light ">
+                                <a class="dropdown-item text-dark bg-light" href="https://vk.com/kamerakozo" target="_blank">VK-1</a>
+                                <a class="dropdown-item text-dark bg-light" href="https://vk.com/otaku_photography" target="_blank">VK-2</a>
+                                <a class="dropdown-item text-dark bg-light" href="https://twitter.com/dkx86ru" target="_blank">Twitter</a>
+                                <a class="dropdown-item text-dark bg-light" href="https://github.com/dkx86" target="_blank">GitHub</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -36,9 +51,26 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted ">
         <div class="container">
-            &copy; 2020 - dkx86weblog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            
+            <div class="row">
+                <small class="col-12 text-wrap">&copy; 2019, 2020 - dkx86weblog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></small>
+            </div>
+            <div class="row">
+                <div class="col-12 text-wrap">
+                    <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" />
+                    </a>
+                    <small>
+                        All works are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                            Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
+                        </a>
+                    </small>
+
+                </div>
+            </div>
+            
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
