@@ -7,6 +7,8 @@ namespace dkx86weblog.Models
     {
         public static readonly string PREVIEW_PREFIX = "thumb_";
         public static readonly int MAX_PREVIEW_WIDTH = 768; //px
+        public static int MAX_WIDTH = 1280;
+
         public Guid Id { get; set; }
 
         [StringLength(128)]

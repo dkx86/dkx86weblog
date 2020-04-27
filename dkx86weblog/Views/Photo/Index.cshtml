@@ -1,0 +1,19 @@
+﻿@model IEnumerable<dkx86weblog.Models.Photo>
+
+@{
+    ViewData["Title"] = "Photos";
+}
+
+
+<div class="row">
+    @foreach (var photo in Model)
+    {
+        <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-lg-4">
+            <div>
+                <a href="#" class="btn btn-outline-dark square align-text-bottom"
+                   style="background-image: url('/photos/@photo.GetPreviewFileName()')"
+                   data-toggle="modal" data-target="#enlargeImage_@photo.Id"></a>
+            </div>
+        </div>
+    }
+</div>

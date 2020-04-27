@@ -38,6 +38,7 @@ namespace dkx86weblog
             services.AddTransient<FileSystemService>();
             services.AddTransient<ImageService>();
             services.AddTransient<BlogService>();
+            services.AddTransient<PhotoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

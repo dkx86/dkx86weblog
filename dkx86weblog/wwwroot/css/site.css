@@ -7,6 +7,14 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.square {
+    width: 100%;
+    padding-bottom: 100%;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 10px;
+}
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
