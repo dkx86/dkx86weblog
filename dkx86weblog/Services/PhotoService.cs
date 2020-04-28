@@ -32,12 +32,14 @@ namespace dkx86weblog.Services
 
             //Make preview file
             string previewFilePath = Path.Combine(photoDirPath, Photo.PREVIEW_PREFIX + Path.GetFileName(photoFile.FileName));
-            _imageService.ResizeByWidth(filePath, previewFilePath, Photo.MAX_WIDTH);
+            var resizeResult = _imageService.Resize(filePath, previewFilePath, Photo.MAX_PREVIEW_LONG_SIDE);
 
             //save model
-            photo.Id = Guid.NewGuid();
-            photo.FileName = Path.GetFileName(photoFile.FileName);
+            photo.ID = Guid.NewGuid();
             photo.Time = DateTime.Now;
+            photo.FileName = Path.GetFileName(photoFile.FileName);
+            photo.Height = resizeResult.OriginalHeight;
+            photo.Width= resizeResult.OriginalWidth;
 
             _context.Add(photo);
             await _context.SaveChangesAsync();
@@ -52,7 +54,7 @@ namespace dkx86weblog.Services
         {
             if (id == null)
                 return null;
-            return await _context.Photo.FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Photo.FirstOrDefaultAsync(p => p.ID == id);
         }
 
         internal async Task RemovePhotoAsync(Guid? id)
@@ -63,6 +65,8 @@ namespace dkx86weblog.Services
 
             _context.Photo.Remove(photo);
             await _context.SaveChangesAsync();
+            _filesystemService.RemoveFileFromServer(photo.GetPreviewFileName(), PHOTOS_DIR_NAME);
+            _filesystemService.RemoveFileFromServer(photo.FileName, PHOTOS_DIR_NAME);
         }
 
         internal async Task<Photo> EditPhotoAsync(Guid id, Photo updatedPhoto)
@@ -83,7 +87,7 @@ namespace dkx86weblog.Services
 
         internal bool PhotoExists(Guid id)
         {
-            return _context.Photo.Any(e => e.Id == id);
+            return _context.Photo.Any(p => p.ID == id);
         }
     }
 }

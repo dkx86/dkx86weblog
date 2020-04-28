@@ -6,10 +6,9 @@ namespace dkx86weblog.Models
     public class Photo
     {
         public static readonly string PREVIEW_PREFIX = "thumb_";
-        public static readonly int MAX_PREVIEW_WIDTH = 768; //px
-        public static int MAX_WIDTH = 1280;
+        public static readonly int MAX_PREVIEW_LONG_SIDE = 1280; //px
 
-        public Guid Id { get; set; }
+        public Guid ID { get; set; }
 
         [StringLength(128)]
         [Display(Name = "File name")]
@@ -20,7 +19,10 @@ namespace dkx86weblog.Models
 
         [StringLength(512)]
         public string Title { get; set; }
-        
+
+        public int Height { get; set; }
+        public int Width { get; set; }
+
 
         public string GetPreviewFileName()
         {

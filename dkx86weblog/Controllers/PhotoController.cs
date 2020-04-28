@@ -1,12 +1,9 @@
-﻿using dkx86weblog.Data;
-using dkx86weblog.Models;
+﻿using dkx86weblog.Models;
 using dkx86weblog.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace dkx86weblog.Controllers
@@ -92,7 +89,7 @@ namespace dkx86weblog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title")] Photo photo)
         {
-            if (id != photo.Id || !_photoService.PhotoExists(photo.Id))
+            if (id != photo.ID || !_photoService.PhotoExists(photo.ID))
             {
                 return NotFound();
             }
@@ -104,7 +101,7 @@ namespace dkx86weblog.Controllers
                     return NotFound();
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Manage));
             }
 
             return View(photo);
@@ -131,7 +128,7 @@ namespace dkx86weblog.Controllers
         {
             var photo = await _photoService.FindPhotoAsync(id);
             await _photoService.RemovePhotoAsync(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Manage));
         }
 
 
