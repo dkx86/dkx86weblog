@@ -18,17 +18,17 @@ namespace dkx86weblog.Controllers
         }
 
         // GET: Photo
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var photos = await _photoService.LoadPhotosAsync();
+            var photos = await _photoService.LoadPhotosAsync(page);
             return View(photos);
         }
 
         // GET: Photo/Manage
         [Authorize]
-        public async Task<IActionResult> Manage()
+        public async Task<IActionResult> Manage(int page = 1)
         {
-            var photos = await _photoService.LoadPhotosAsync();
+            var photos = await _photoService.LoadPhotosAsync(page);
             return View(photos);
         }
 

@@ -1,12 +1,12 @@
-﻿@model IEnumerable<dkx86weblog.Models.Photo>
+﻿@model dkx86weblog.Models.PhotoViewModel
 
 @{
     ViewData["Title"] = "Photos";
 }
- 
 
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
 <div class="card-columns">
-    @foreach (var photo in Model)
+    @foreach (var photo in Model.Items)
     {
         <div class="card photo-card">
             <img src="/photos/@photo.GetPreviewFileName()" class="card-img-top" alt="@photo.Title">
@@ -15,4 +15,4 @@
     }
 </div>
 
-
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)

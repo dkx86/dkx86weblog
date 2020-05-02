@@ -1,11 +1,11 @@
-﻿@model IEnumerable<dkx86weblog.Models.Photo>
+﻿@model dkx86weblog.Models.PhotoViewModel
 
 @{
     ViewData["Title"] = "Manage photos";
 }
 
 <h1>Manage photos</h1>
-
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
 <p>
     <a asp-action="Upload" class="btn btn-success">Upload New</a>
 </p>
@@ -13,27 +13,27 @@
     <thead>
         <tr>
             <th>
-
+                Preview
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FileName)
+                File name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Time)
+                Time
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Title
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Items)
         {
             <tr>
                 <td>
-                    <a class="btn square" style="background-image: url('/photos/@item.GetPreviewFileName()')" asp-action="Details" asp-route-id="@item.ID"/>
-                    
+                    <a class="btn square" style="background-image: url('/photos/@item.GetPreviewFileName()')" asp-action="Details" asp-route-id="@item.ID" />
+
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FileName)
@@ -45,10 +45,12 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
                     <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)

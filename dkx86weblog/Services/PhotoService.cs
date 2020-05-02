@@ -39,15 +39,25 @@ namespace dkx86weblog.Services
             photo.Time = DateTime.Now;
             photo.FileName = Path.GetFileName(photoFile.FileName);
             photo.Height = resizeResult.OriginalHeight;
-            photo.Width= resizeResult.OriginalWidth;
+            photo.Width = resizeResult.OriginalWidth;
 
             _context.Add(photo);
             await _context.SaveChangesAsync();
         }
 
-        internal async Task<List<Photo>> LoadPhotosAsync()
+        internal async Task<PhotoViewModel> LoadPhotosAsync(int page)
         {
-            return await _context.Photo.OrderByDescending(p => p.Time).ToListAsync();
+            var itemsAll = _context.Photo.OrderByDescending(p => p.Time);
+            return await MakeGalleryViewModel(itemsAll, page);
+        }
+
+        private async Task<PhotoViewModel> MakeGalleryViewModel(IQueryable<Photo> itemsAll, int page)
+        {
+            var itemsCount = await itemsAll.CountAsync();
+            var itemsForPage = await itemsAll.Skip((page - 1) * PageViewModel.PAGE_SIZE).Take(PageViewModel.PAGE_SIZE).ToListAsync();
+
+            PageViewModel pageModel = new PageViewModel(itemsCount, page);
+            return new PhotoViewModel(itemsForPage, pageModel);
         }
 
         internal async Task<Photo> FindPhotoAsync(Guid? id)
