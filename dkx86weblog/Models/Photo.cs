@@ -29,5 +29,15 @@ namespace dkx86weblog.Models
             return PREVIEW_PREFIX + FileName;
         }
 
+        public bool IsVertical()
+        {
+            return Height > Width;
+        }
+
+        public bool IsHorizintal()
+        {
+            return Height < Width;
+        }
+
     }
 }
