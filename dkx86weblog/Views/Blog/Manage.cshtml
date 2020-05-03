@@ -1,4 +1,4 @@
-﻿@model IEnumerable<dkx86weblog.Models.Post>
+﻿@model dkx86weblog.Models.BlogViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -7,29 +7,32 @@
 <h1>MANAGE BLOG</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-success" asp-action="Create">Create New</a>
 </p>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CreateTime)
+                Create time
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UpdateTime)
+                Update time
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Title
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Published)
+                Published
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Items)
         {
             <tr>
                 <td>
@@ -64,3 +67,5 @@
         }
     </tbody>
 </table>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)

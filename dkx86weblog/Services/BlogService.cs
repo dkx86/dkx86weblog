@@ -2,7 +2,6 @@
 using dkx86weblog.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,14 +16,25 @@ namespace dkx86weblog.Services
             _context = context;
         }
 
-        internal async Task<List<Post>> GetPublishedPostsAsync()
+        internal async Task<BlogViewModel> GetPublishedPostsAsync(int page)
         {
-            return await _context.Post.Where(p => p.Published).OrderByDescending(p => p.CreateTime).ToListAsync();
+            var itemsAll = _context.Post.Where(p => p.Published).OrderByDescending(p => p.CreateTime);
+            return await MakeViewModel(itemsAll, page);
         }
 
-        internal async Task<List<Post>> GetAllPostsAsync()
+        internal async Task<BlogViewModel> GetAllPostsAsync(int page)
         {
-            return await _context.Post.OrderByDescending(p => p.CreateTime).ToListAsync();
+            var itemsAll = _context.Post.OrderByDescending(p => p.CreateTime);
+            return await MakeViewModel(itemsAll, page);
+        }
+
+        private async Task<BlogViewModel> MakeViewModel(IQueryable<Post> itemsAll, int page)
+        {
+            var itemsCount = await itemsAll.CountAsync();
+            var itemsForPage = await itemsAll.Skip((page - 1) * PageViewModel.PAGE_SIZE).Take(PageViewModel.PAGE_SIZE).ToListAsync();
+
+            PageViewModel pageModel = new PageViewModel(itemsCount, page);
+            return new BlogViewModel(itemsForPage, pageModel);
         }
 
         internal async Task CreatePostAsync(Post post)
@@ -67,7 +77,7 @@ namespace dkx86weblog.Services
                 post.CreateTime = DateTime.Now;
                 post.UpdateTime = post.CreateTime;
             }
-            
+
             post.Published = publish;
             await _context.SaveChangesAsync();
         }

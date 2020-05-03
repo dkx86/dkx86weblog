@@ -15,9 +15,21 @@
             <a class="page-link" href="?page=@(Model.PageNumber - 1)" aria-label="Previous">&laquo;</a>
         </li>
 
-        <li class="page-item disabled">
-            <p class="page-link">@Model.PageNumber / @Model.TotalPages</p>
-            
+        <li class="page-item dropdown">
+
+            <a class="page-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @Model.PageNumber / @Model.TotalPages
+            </a>
+
+            <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuLink">
+
+                @for (int p = 1; p <= Model.TotalPages; p++)
+                {
+                    var disabled = (Model.PageNumber == p) ? "disabled" : "";
+                    <a class="dropdown-item page-link @disabled" href="?page=@p">@p</a>
+                }
+
+            </div>
         </li>
 
         @{

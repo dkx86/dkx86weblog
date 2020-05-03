@@ -48,10 +48,10 @@ namespace dkx86weblog.Services
         internal async Task<PhotoViewModel> LoadPhotosAsync(int page)
         {
             var itemsAll = _context.Photo.OrderByDescending(p => p.Time);
-            return await MakeGalleryViewModel(itemsAll, page);
+            return await MakeViewModel(itemsAll, page);
         }
 
-        private async Task<PhotoViewModel> MakeGalleryViewModel(IQueryable<Photo> itemsAll, int page)
+        private async Task<PhotoViewModel> MakeViewModel(IQueryable<Photo> itemsAll, int page)
         {
             var itemsCount = await itemsAll.CountAsync();
             var itemsForPage = await itemsAll.Skip((page - 1) * PageViewModel.PAGE_SIZE).Take(PageViewModel.PAGE_SIZE).ToListAsync();

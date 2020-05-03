@@ -20,9 +20,9 @@ namespace dkx86weblog.Controllers
         }
 
         // GET: Blog
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var posts =  await _service.GetPublishedPostsAsync();
+            var posts =  await _service.GetPublishedPostsAsync(page);
             return View(posts);
         }
 
@@ -46,9 +46,9 @@ namespace dkx86weblog.Controllers
 
         // GET: Blog/Manage
         [Authorize]
-        public async Task<IActionResult> Manage()
+        public async Task<IActionResult> Manage(int page = 1)
         {
-            var posts = await _service.GetAllPostsAsync();
+            var posts = await _service.GetAllPostsAsync(page);
             return View(posts);
         }
 
@@ -70,7 +70,7 @@ namespace dkx86weblog.Controllers
             if (ModelState.IsValid)
             {
                 await _service.CreatePostAsync(post);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Manage));
             }
             return View(post);
         }

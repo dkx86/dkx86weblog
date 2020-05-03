@@ -1,13 +1,12 @@
-﻿@model IEnumerable<dkx86weblog.Models.Post>
+﻿@model dkx86weblog.Models.BlogViewModel
 
 @{
     ViewData["Title"] = "Blog";
 }
 
-<h1>Blog</h1>
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
 
-
-@foreach (var item in Model)
+@foreach (var item in Model.Items)
 {
 
     <div class="card nrw-card-bg col-12">
@@ -21,3 +20,5 @@
     </div>
     <br />
 }
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
