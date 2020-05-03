@@ -6,19 +6,21 @@
 
 @await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
 
-@foreach (var item in Model.Items)
-{
+<div class="row row-cols-1">
+    <div class="col">
+        @foreach (var item in Model.Items)
+        {
 
-    <div class="card nrw-card-bg col-12">
-        <div class="card-body">
-            <h4 class="card-title">@item.Title</h4>
-            <h6 class="card-subtitle mb-2 text-muted">@item.CreateTime</h6>
-            <p class="card-text">@item.GetPreview()</p>
-            <a asp-action="Post" asp-route-id="@item.ID" class="card-link btn btn-dark">Read More</a>
-        </div>
-
+            <div class="card nrw-card-bg  mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">@item.Title</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">@item.CreateTime</h6>
+                    <p class="card-text">@item.GetPreview()</p>
+                    <a asp-action="Post" asp-route-id="@item.ID" class="card-link stretched-link"></a>
+                </div>
+            </div>
+        }
     </div>
-    <br />
-}
+</div>
 
 @await Html.PartialAsync("_PaginationPartial", @Model.PageModel)

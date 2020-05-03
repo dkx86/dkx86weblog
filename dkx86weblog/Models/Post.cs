@@ -7,6 +7,7 @@ namespace dkx86weblog.Models
 {
     public class Post
     {
+        private readonly int PREVIEW_MIN_LENGTH = 256;
         public Guid ID { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -28,8 +29,11 @@ namespace dkx86weblog.Models
             if (Body == null)
                 return string.Empty;
             string noHTML = Regex.Replace(Body, @"<[^>]+>|&nbsp;|&.*?;", string.Empty).Trim();
-            int end = Math.Min(256, noHTML.Length);
-            return noHTML.Substring(0, end).TrimEnd() + "...";
+            if (noHTML.Length <= PREVIEW_MIN_LENGTH)
+                return noHTML;
+
+            int end = noHTML.IndexOf(".", PREVIEW_MIN_LENGTH) + 1;
+            return noHTML.Substring(0, end).TrimEnd();
         }
     }
 }
