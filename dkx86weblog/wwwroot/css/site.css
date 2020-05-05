@@ -1,10 +1,13 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+@charset "utf-8";
+@import url(font/font.css);
+
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 .square {
@@ -18,13 +21,13 @@ a.navbar-brand {
 /* photo cards */
 @media (min-width: 576px) {
     .card-columns {
-        column-count: 2;
+        column-count: 1;
     }
 }
 
 @media (min-width: 768px) {
     .card-columns {
-        column-count: 2;
+        column-count: 1;
     }
 }
 
@@ -66,7 +69,7 @@ a {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -99,8 +102,9 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 110px;
+    /* Margin bottom by footer height */
+    margin-bottom: 110px;
+    font-family: 'Oswald', sans-serif;
 }
 .footer {
   position: absolute;
@@ -110,3 +114,61 @@ body {
   line-height: 30px; /* Vertically center the text there */
   height:110px;
 }
+
+/************************************************** TOA *****************************************************/
+.bg-black{
+    background-color:#000;
+}
+
+.menu_hr {
+    max-width:256px;
+    border: 1px solid #fff;
+}
+
+.suptext {
+    font-size: 50%;
+    text-decoration:underline;
+}
+
+.post_body {
+    font-family: sans-serif;
+}
+.dropdown-menu {
+    min-width: 5.4rem;
+}
+
+/* PAGE BAR */
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: 0px;
+    line-height: 1.25;
+    color: #000;
+    background-color: #fff;
+    border: 0px solid #1d2124;
+}
+
+.page-item.disabled .page-link {
+    color: #000;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border: 0px;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #000;
+    border-color: #6c757d;
+}
+
+.page-link:focus, .page-link:hover {
+    color: #000;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-color: #1d2124;
+}
+    
+

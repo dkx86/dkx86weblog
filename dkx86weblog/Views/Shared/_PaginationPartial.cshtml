@@ -5,14 +5,15 @@
     return;
 }
 
-
-<nav aria-label="Page navigation">
-    <ul class="pagination pagination-lg justify-content-center">
+<nav aria-label="Page navigation" >
+    <ul class="pagination pagination-lg justify-content-between">
         @{
-            var disabledPrev = Model.HasPreviousPage ? "" : "disabled";
+            var disabledPrev = Model.HasPreviousPage ? "" : "invisible";
+            var disabledNext = Model.HasNextPage ? "" : "invisible";
         }
-        <li class="page-item @disabledPrev">
-            <a class="page-link" href="?page=@(Model.PageNumber - 1)" aria-label="Previous">&laquo;</a>
+
+        <li class="page-item  @disabledPrev">
+            <a class="page-link" href="?page=@(Model.PageNumber - 1)" aria-label="Previous">&#9664;</a>
         </li>
 
         <li class="page-item dropdown">
@@ -24,19 +25,17 @@
             <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuLink">
 
                 @for (int p = 1; p <= Model.TotalPages; p++)
-                {
+                {   
                     var disabled = (Model.PageNumber == p) ? "disabled" : "";
-                    <a class="dropdown-item page-link @disabled" href="?page=@p">@p</a>
+                    <a class="dropdown-item page-link border-left-0 border-right-0 text-center @disabled" href="?page=@p">@p</a>
                 }
 
             </div>
         </li>
 
-        @{
-            var disabledNext = Model.HasNextPage ? "" : "disabled";
-        }
+        
         <li class="page-item @disabledNext">
-            <a class="page-link" href="?page=@(Model.PageNumber + 1)" aria-label="Next">&raquo;</a>
+            <a class="page-link" href="?page=@(Model.PageNumber + 1)" aria-label="Next">&#9654;</a>
         </li>
     </ul>
 </nav>
