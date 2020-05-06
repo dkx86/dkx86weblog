@@ -9,10 +9,20 @@
     @foreach (var photo in Model.Items)
     {
         <div class="card photo-card">
-            <img src="/photos/@photo.GetPreviewFileName()" class="card-img-top" alt="@photo.Title">
+            <a href="#photo_@photo.ID">
+                <img src="/photos/@photo.GetPreviewFileName()" class="card-img-top" alt="@photo.Title" data-toggle="modal" data-target="#enlargeImage_@photo.ID" />
+            </a>
         </div>
+        
 
     }
 </div>
+
+<a href="#" class="JesterBox">
+    @foreach (var photo in Model.Items)
+    {
+        <div id="photo_@photo.ID"><img src="~/photos/@photo.GetPreviewFileName()"></div>
+    }
+</a>
 
 @await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
