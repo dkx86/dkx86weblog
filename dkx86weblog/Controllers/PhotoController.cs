@@ -57,7 +57,7 @@ namespace dkx86weblog.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upload([Bind("Id,Title")] Photo photo, IFormFile photoFile)
+        public async Task<IActionResult> Upload([Bind("ID,Title")] Photo photo, IFormFile photoFile)
         {
             if (!ModelState.IsValid || photoFile == null)
             {
@@ -87,7 +87,7 @@ namespace dkx86weblog.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title")] Photo photo)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ID,Title")] Photo photo)
         {
             if (id != photo.ID || !_photoService.PhotoExists(photo.ID))
             {

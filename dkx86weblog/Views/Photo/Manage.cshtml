@@ -16,9 +16,6 @@
                 Preview
             </th>
             <th>
-                File name
-            </th>
-            <th>
                 Time
             </th>
             <th>
@@ -32,11 +29,8 @@
         {
             <tr>
                 <td>
-                    <a class="btn square" style="background-image: url('/photos/@item.GetPreviewFileName()')" asp-action="Details" asp-route-id="@item.ID" />
-
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.FileName)
+                    <a class="btn square" style="background-image: url('/photos/@item.GetPreviewFileName()')" asp-action="Details" asp-route-id="@item.ID" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Time)
@@ -45,8 +39,8 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning m-1">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger m-1">Delete</a>
                 </td>
             </tr>
         }
