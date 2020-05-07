@@ -8,21 +8,21 @@
 <div class="card-columns">
     @foreach (var photo in Model.Items)
     {
-        <div class="card photo-card">
+        <div class="card photo-card" id="tile_@photo.ID">
             <a href="#photo_@photo.ID">
-                <img src="/photos/@photo.GetPreviewFileName()" class="card-img-top" alt="@photo.Title" data-toggle="modal" data-target="#enlargeImage_@photo.ID" />
+                <img src="/photos/@photo.GetPreviewFileName()" class="card-img-top" alt="@photo.Title" />
             </a>
         </div>
-        
+
 
     }
 </div>
 
-<a href="#" class="JesterBox">
+<div class="JesterBox">
     @foreach (var photo in Model.Items)
     {
-        <div id="photo_@photo.ID"><img src="~/photos/@photo.GetPreviewFileName()"></div>
+        <div id="photo_@photo.ID"><img src="~/photos/@photo.GetPreviewFileName()" onClick="history.go(-1);" /></div>
     }
-</a>
+</div>
 
 @await Html.PartialAsync("_PaginationPartial", @Model.PageModel)

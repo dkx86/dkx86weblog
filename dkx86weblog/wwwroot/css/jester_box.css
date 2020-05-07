@@ -1,15 +1,15 @@
 ﻿/* JesterBox 
-    * Author: Schizohatter/Soanvig (http://schizohatter.tk)
-    * More information in readme (https://github.com/soanvig/JesterBox)
-    */
+* Author: Schizohatter/Soanvig (http://schizohatter.tk)
+* More information in readme (https://github.com/soanvig/JesterBox)
+*/
 
 .JesterBox div {
     visibility: hidden;
     position: fixed;
-    top: 5%;
-    right: 5%;
-    bottom: 5%;
-    left: 5%;
+    top: 2%;
+    right: 2%;
+    bottom: 2%;
+    left: 2%;
     z-index: 75;
     text-align: center;
     display: flex;
@@ -26,7 +26,7 @@
     left: 0;
     z-index: 74;
     background-color: rgba(0, 0, 0, 0);
-    transition: all 0.5s ease-out;
+    transition: all 0.3s ease-out;
 }
 
 .JesterBox div img {
@@ -34,10 +34,9 @@
     z-index: 77;
     max-width: 100%;
     max-height: 100%;
-    margin-left: -9999px;
     opacity: 0;
     transition-property: all, opacity;
-    transition-duration: 0.5s, 0.2s;
+    transition-duration: 0.5s, 0s;
     transition-timing-function: ease-in-out, ease-out;
 }
 
@@ -45,11 +44,11 @@
     visibility: visible;
 }
 
-    .JesterBox div:target:before {
-        background-color: rgba(0, 0, 0, 0.7);
-    }
+.JesterBox div:target:before {
+    background-color: rgba(0, 0, 0, 0.8);
+}
 
-    .JesterBox div:target img {
-        margin-left: 0px;
-        opacity: 1;
-    }
+.JesterBox div:target img {
+    margin-left: 0px;
+    opacity: 1;
+}
