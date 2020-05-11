@@ -38,13 +38,13 @@ namespace dkx86weblog.Controllers
             //Resize
             _imageService.ResizeByWidth(filePath, filePath, MAX_BLOG_IMAGE_WIDTH);
 
-            return new Location { location = fileName };
+            return new Location { FileName = fileName };
         }
 
     }
 
     public class Location
     {
-        public string location { get; set; }
+        public string FileName { get; set; }
     }
 }

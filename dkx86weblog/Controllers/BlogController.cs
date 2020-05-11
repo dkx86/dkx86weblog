@@ -1,11 +1,8 @@
-﻿using dkx86weblog.Data;
-using dkx86weblog.Models;
+﻿using dkx86weblog.Models;
 using dkx86weblog.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace dkx86weblog.Controllers
@@ -76,6 +73,7 @@ namespace dkx86weblog.Controllers
         }
 
         // GET: Blog/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
