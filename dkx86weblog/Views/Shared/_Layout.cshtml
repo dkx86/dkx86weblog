@@ -3,15 +3,37 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - dkx86weblog</title>
+
+    <!-- Apple/Safari icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon180.jpg">
+    <!-- Square Windows tiles -->
+    <meta name="msapplication-square70x70logo" content="/icon70.jpg">
+    <meta name="msapplication-square150x150logo" content="/icon150.jpg">
+    <meta name="msapplication-square310x310logo" content="/icon310.jpg">
+
+
+    @*== FOR SNS ==*@
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="keywords" content="anime, cosplay, otaku, IT, photo, photography,　figures, figma, nendoroid, nendroid, аниме, косплей, отаку, фото, фотография, фигурки, нендройд, фигма, アニメ, コスプレ, フィギュア, 写真, オタク, ねんどろいど" />
+    <meta name="author" content="Dmitry Kuznetsov aka 「dkx86」">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@ViewData["Title"] - dkx86・weblog">
+    <meta property="og:site_name" content="dkx86.ru">
+    <meta property="og:description" content="IT・Photography・Otaku Culture">
+    @* == FOR SNS END ==*@
+
+
+    <title>@ViewData["Title"] - dkx86・weblog</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/jester_box.css" />
 </head>
-<body>
+<body >
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">dkx86weblog</a>
+                <a class="navbar-brand " asp-area="" asp-controller="Home" asp-action="Index">「 dkx86・weblog 」</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,10 +42,19 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Blog" asp-action="Index">BLOG</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Photo" asp-action="Index">PHOTO</a>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link  text-dark dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">SNS</a>
+                            <div class="dropdown-menu bg-light ">
+                                <a class="dropdown-item text-dark bg-light" href="https://vk.com/dkx86" target="_blank">VK</a>
+                                <a class="dropdown-item text-dark bg-light" href="https://twitter.com/dkx86ru" target="_blank">Twitter</a>
+                                <a class="dropdown-item text-dark bg-light" href="https://github.com/dkx86" target="_blank">GitHub</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -36,9 +67,26 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted ">
         <div class="container">
-            &copy; 2020 - dkx86weblog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            
+            <div class="row">
+                <small class="col-12 text-wrap">&copy; 2020 - Dmitry Kuznetsov aka 「dkx86」</small>
+            </div>
+            <div class="row">
+                <div class="col-12 text-wrap">
+                    <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" />
+                    </a>
+                    <small>
+                        All works are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                            Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
+                        </a>
+                    </small>
+
+                </div>
+            </div>
+            
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -12,6 +12,7 @@ using dkx86weblog.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using dkx86weblog.Services;
 
 namespace dkx86weblog
 {
@@ -27,13 +28,20 @@ namespace dkx86weblog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //string connectionString = Configuration.GetConnectionString("DefaultConnection"); //LOCAL DEV
+            string connectionString = Configuration.GetConnectionString("PgsqlConnection"); // Production
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddTransient<FileSystemService>();
+            services.AddTransient<ImageService>();
+            services.AddTransient<BlogService>();
+            services.AddTransient<PhotoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

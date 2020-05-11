@@ -1,0 +1,26 @@
+﻿@model dkx86weblog.Models.BlogViewModel
+
+@{
+    ViewData["Title"] = "Blog";
+}
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
+
+<div class="row row-cols-1">
+    <div class="col">
+        @foreach (var item in Model.Items)
+        {
+
+            <div class="card nrw-card-bg  mb-4">
+                <div class="card-body">
+                    <h6 class="card-subtitle small mb-2 text-muted">@item.CreateTime</h6>
+                    <h4 class="card-title ml-2 mb-4">@item.Title</h4>
+                    <p class="card-text post_body ml-2">@item.GetPreview()</p>
+                    <a asp-action="Post" asp-route-id="@item.ID" class="card-link stretched-link"></a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)

@@ -1,0 +1,64 @@
+﻿@model dkx86weblog.Models.BlogViewModel
+
+@{
+    ViewData["Title"] = "Manage blog";
+}
+
+<h1>MANAGE BLOG</h1>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">Create New</a>
+</p>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Time
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Published
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateTime) / @Html.DisplayFor(modelItem => item.UpdateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Published)
+                </td>
+                <td>
+                    @if (!item.Published)
+                    {
+                        <a asp-action="Publish" class="btn btn-success m-1" asp-route-id="@item.ID">Publish</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Unpublish" class="btn btn-warning m-1" asp-route-id="@item.ID">Unpublish</a>
+                    }
+
+
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-primary m-1">Edit</a> 
+                    <a asp-action="Post" asp-route-id="@item.ID" class="btn btn-info m-1">Details</a> 
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger m-1">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)

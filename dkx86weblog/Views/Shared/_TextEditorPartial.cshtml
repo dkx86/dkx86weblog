@@ -1,0 +1,19 @@
+﻿@* https://www.tiny.cloud/docs/general-configuration-guide/upload-images/ *@
+
+
+<script src="~/lib/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: '#Body',
+        min_height: 100,
+        plugins: 'image code link media lists',
+        toolbar: 'undo redo | h1 h2 h3 | bold italic underline | image media code link | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+    /* without images_upload_url set, Upload tab won't show up*/
+        images_upload_url: '/api/Upload/UploadBlogImage',
+        images_upload_base_path: '/blog_files/',
+        image_class_list: [
+            { title: 'Responsive', value: 'img-fluid' }
+        ]
+    });
+</script>
+

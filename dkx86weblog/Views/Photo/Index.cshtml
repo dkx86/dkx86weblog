@@ -1,0 +1,28 @@
+﻿@model dkx86weblog.Models.PhotoViewModel
+
+@{
+    ViewData["Title"] = "Photo";
+}
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
+<div class="card-columns">
+    @foreach (var photo in Model.Items)
+    {
+        <div class="card" id="tile_@photo.ID">
+            <a href="#photo_@photo.ID">
+                <img src="/photos/@photo.GetPreviewFileName()" class="card-img-top" alt="@photo.Title" title="@photo.Title" />
+            </a>
+        </div>
+    }
+</div>
+
+<div class="JesterBox">
+    @foreach (var photo in Model.Items)
+    {
+        <div id="photo_@photo.ID">
+            <img src="~/photos/@photo.GetPreviewFileName()" onClick="history.go(-1);" alt="@photo.Title" title="@photo.Title"/>
+        </div>
+    }
+</div>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
