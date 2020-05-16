@@ -3,6 +3,7 @@ using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
+using System;
 using System.IO;
 
 namespace dkx86weblog.Services
@@ -16,6 +17,10 @@ namespace dkx86weblog.Services
             using (Image image = Image.Load(inputFile, out IImageFormat format))
             {
                 ImageResizeResult resizeResult = new ImageResizeResult(image.Height, image.Width);
+                
+                if (!NeedResize(image, longEdgeSize))
+                    return resizeResult;
+
                 int width = 0;
                 int height = 0;
                 if (image.Width > image.Height)
@@ -78,6 +83,11 @@ namespace dkx86weblog.Services
         private float AspectRation(int height, int width)
         {
             return width / height;
+        }
+
+        private bool NeedResize(Image image, int longEdgeSize)
+        {
+            return image.Height > longEdgeSize || image.Width > longEdgeSize;
         }
 
         public class ImageResizeResult
