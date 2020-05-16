@@ -66,7 +66,7 @@ namespace dkx86weblog.Controllers
             }
 
             await _photoService.UploadAsync(photo, photoFile);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Manage));
 
         }
 
