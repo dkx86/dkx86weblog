@@ -12,7 +12,6 @@ namespace dkx86weblog.Controllers
     [ApiController]
     public class UploadController : ControllerBase
     {
-
         private readonly FileSystemService _filesystemService;
         private readonly ImageService _imageService;
         private readonly static string FILES_DIR = "blog_files";
@@ -28,7 +27,7 @@ namespace dkx86weblog.Controllers
         // POST: api/UploadImage/
         [Authorize]
         [HttpPost]
-        public async Task<Location> UploadBlogImage(IFormFile file)
+        public async Task<FileLocation> UploadBlogImage(IFormFile file)
         {
             string fileName = DateTime.Now.ToFileTime() + Path.GetExtension(file.FileName);
             //Upload file
@@ -36,15 +35,15 @@ namespace dkx86weblog.Controllers
             var filePath = await _filesystemService.AddFileToServer(file, photoDirPath, fileName);
 
             //Resize
-            _imageService.ResizeByWidth(filePath, filePath, MAX_BLOG_IMAGE_WIDTH);
+            _imageService.Resize(filePath, filePath, MAX_BLOG_IMAGE_WIDTH);
 
-            return new Location { FileName = fileName };
+            return new FileLocation { Location = fileName };
         }
 
     }
 
-    public class Location
+    public class FileLocation
     {
-        public string FileName { get; set; }
+        public string Location { get; set; }
     }
 }
