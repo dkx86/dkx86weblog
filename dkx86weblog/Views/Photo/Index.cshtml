@@ -19,9 +19,13 @@
 <div class="JesterBox">
     @foreach (var photo in Model.Items)
     {
-        <div id="photo_@photo.ID">
-            <img src="~/photos/@photo.GetPreviewFileName()" onClick="history.go(-1);" alt="@photo.Title" title="@photo.Title"/>
+    <div id="photo_@photo.ID" class="JesterBoxDiv">
+        <img src="~/photos/@photo.GetPreviewFileName()" onClick="history.go(-1);" alt="@photo.Title" title="@photo.Title" />
+        <div class="overlay">
+            <a href="~/photos/@photo.FileName" class="btn btn-danger" download>&#129095;</a>
         </div>
+    </div>
+        
     }
 </div>
 
