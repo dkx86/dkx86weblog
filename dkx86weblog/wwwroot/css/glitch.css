@@ -1,0 +1,135 @@
+﻿
+/* links */
+.glitch {
+    color: #000;
+    transform: translate(0);
+}
+
+    .glitch:hover {
+        animation: glitchAnimShift 0.4s
+    }
+
+
+/* Post title */
+.glitchPost {
+    transform: translate(0);
+}
+
+    .glitchPost:hover > .glitchTitle {
+        animation: glitchAnimShift 0.5s
+    }
+
+
+/* images*/
+.glitchImage {
+    
+    transform: translate(0);
+}
+
+    .glitchImage:hover {
+        animation: glitchImageAnimShift 0.4s
+    }
+
+
+@keyframes glitchAnimShift {
+    0% {
+        color: #000;
+        text-shadow: 0px 0px rgba(255, 0, 0, 0), 0px 0px rgba(0, 255, 0, 0), 0px 0px rgba(0, 0, 255, 0);
+    }
+
+    1% {
+        color: #fff;
+        text-shadow: 0px 0px rgba(255, 0, 0, 0.4), 0px 0px rgba(0, 255, 0, 0.4), 0px 0px rgba(0, 0, 255, 0.4);
+    }
+
+    25% {
+        color: #eaeaea;
+        text-shadow: -5px 2px rgba(255, 0, 0, 0.4), -4px -2px rgba(0, 255, 0, 0.4), -3px 0px rgba(0, 0, 255, 0.4);
+    }
+
+    50% {
+        color: #fff;
+        text-shadow: -3px 0px rgba(255, 0, 0, 0.4), -5px 2px rgba(0, 255, 0, 0.4), -4px -2px rgba(0, 0, 255, 0.4);
+    }
+
+    75% {
+        color: #eaeaea;
+        text-shadow: -5px 2px rgba(255, 0, 0, 0.4), -4px -2px rgba(0, 255, 0, 0.4), -3px 0px rgba(0, 0, 255, 0.4);
+    }
+
+    100% {
+        color: #000;
+        text-shadow: 0px 0px rgba(255, 0, 0, 0), 0px 0px rgba(0, 255, 0, 0), 0px 0px rgba(0, 0, 255, 0);
+    }
+}
+
+
+
+@keyframes glitchImageAnimShift {
+    0% {
+        
+        box-shadow: 0px 0px rgba(255, 0, 0, 0), 0px 0px rgba(0, 255, 0, 0), 0px 0px rgba(0, 0, 255, 0);
+    }
+
+    1% {
+        filter: invert(1);
+        box-shadow: 0px 0px rgba(255, 0, 0, 0.4), 0px 0px rgba(0, 255, 0, 0.4), 0px 0px rgba(0, 0, 255, 0.4);
+    }
+
+    25% {
+        filter: invert(0.7);
+        box-shadow: -6px 3px rgba(255, 0, 0, 0.4), -5px -3px rgba(0, 255, 0, 0.4), -4px 2px rgba(0, 0, 255, 0.4);
+    }
+
+    50% {
+        filter: invert(1);
+        box-shadow: -4px 0px rgba(255, 0, 0, 0.4), -6px 3px rgba(0, 255, 0, 0.4), -5px -3px rgba(0, 0, 255, 0.4);
+    }
+
+    75% {
+        filter: invert(0);
+        box-shadow: -6px 3px rgba(255, 0, 0, 0.4), -5px -3px rgba(0, 255, 0, 0.4), -5px 0px rgba(0, 0, 255, 0.4);
+    }
+
+    100% {
+        color: #000;
+        box-shadow: 0px 0px rgba(255, 0, 0, 0), 0px 0px rgba(0, 255, 0, 0), 0px 0px rgba(0, 0, 255, 0);
+    }
+}
+
+
+
+
+@keyframes glitchAnimBlast {
+    0% {
+        color: #000;
+        text-shadow: 0px 0px rgba(255, 0, 0, 0), 0px 0px rgba(0, 255, 0, 0), 0px 0px rgba(0, 0, 255, 0);
+    }
+
+    1% {
+        color: #808080;
+        text-shadow: 0px 0px rgba(255, 0, 0, 0.4), 0px 0px rgba(0, 255, 0, 0.4), 0px 0px rgba(0, 0, 255, 0.4);
+    }
+
+    25% {
+        color: #808080;
+        text-shadow: -5px 1px rgba(255, 0, 0, 0.4), -4px -1px rgba(0, 255, 0, 0.4), -3px 0px rgba(0, 0, 255, 0.4);
+    }
+
+    50% {
+        color: #808080;
+        text-shadow: -3px 0px rgba(255, 0, 0, 0.4), -5px 1px rgba(0, 255, 0, 0.4), -4px -1px rgba(0, 0, 255, 0.4);
+    }
+
+    75% {
+        color: #808080;
+        text-shadow: -5px 1px rgba(255, 0, 0, 0.4), -4px -1px rgba(0, 255, 0, 0.4), -3px 0px rgba(0, 0, 255, 0.4);
+    }
+
+    100% {
+        color: #000;
+        text-shadow: 0px 0px rgba(255, 0, 0, 0), 0px 0px rgba(0, 255, 0, 0), 0px 0px rgba(0, 0, 255, 0);
+    }
+}
+
+
