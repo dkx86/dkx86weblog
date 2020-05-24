@@ -1,5 +1,6 @@
 ﻿using dkx86weblog.Models;
 using dkx86weblog.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,6 +19,7 @@ namespace dkx86weblog.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly BlogService _blogService;
         private readonly PhotoService _photoService;
 
@@ -25,11 +27,13 @@ namespace dkx86weblog.Controllers
         private readonly static int RSS_PHOTO_FEED_SIZE = 12;
 
 
-        public HomeController(ILogger<HomeController> logger, BlogService blogService, PhotoService photoService)
+        public HomeController(ILogger<HomeController> logger, BlogService blogService, PhotoService photoService, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _blogService = blogService;
             _photoService = photoService;
+
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -47,39 +51,22 @@ namespace dkx86weblog.Controllers
         [HttpGet]
         public async Task<IActionResult> Rss()
         {
-            var feed = new SyndicationFeed("「 dkx86・weblog 」", "IT・Photography・Otaku Culture", new Uri("http://dkx86.ru"), "http://dkx86.ru/Home/Rss", DateTime.Now);
-
-            feed.Copyright = new TextSyndicationContent($"{DateTime.Now.Year} &copy; Dmitry Kuznetsov aka 「dkx86」");
-            var items = new List<SyndicationItem>();
-            var postings = await _blogService.ListBlogForRssAsync(RSS_BLOG_FEED_SIZE);
+            var request = _httpContextAccessor.HttpContext.Request;
+            var hostname = string.Concat(request.Scheme,"://",request.Host.ToUriComponent());
             
+            var feed = new SyndicationFeed("「 dkx86・weblog 」", "IT・Photography・Otaku Culture", new Uri(hostname), hostname + "/Home/Rss", DateTime.Now);
+            feed.Copyright = new TextSyndicationContent($"{DateTime.Now.Year} Dmitry Kuznetsov aka 「dkx86」");
 
-            foreach (var item in postings)
-            {
-                var postUrl = Url.Action("Post", "Blog", new { id = item.ID }, HttpContext.Request.Scheme);
-                var title = item.Title;
-                var description = item.GetPreview();
-                var syndicationItem = new SyndicationItem(title, description, new Uri(postUrl), item.ID.ToString(), item.CreateTime);
-                items.Add(syndicationItem);
+            var items = new List<SyndicationItem>();
+            items.AddRange(await GetBlogPosts());
+            items.AddRange(await GetPhotos());
+            feed.Items = items.OrderByDescending(i => i.PublishDate);
 
-            }
+            return WriteRssToFile(feed);
+        }
 
-            var photos = await _photoService.ListPhotosForRssAsync(RSS_PHOTO_FEED_SIZE);
-            foreach (var item in photos)
-            {
-                var photoUrl = Url.Action("Index", "Photo", null, HttpContext.Request.Scheme) + "#photo_" + item.ID;
-                var title = "Photo " + item.Time;
-                var description = item.Title == null? String.Empty : item.Title;
-                var syndicationItem = new SyndicationItem(title, description, new Uri(photoUrl), item.ID.ToString(), item.Time);
-                syndicationItem.ElementExtensions.Add(new XElement("enclosure", new XAttribute("type", "image/jpeg"), new XAttribute("url", "/photos/" + item.GetPreviewFileName())).CreateReader());
-
-                items.Add(syndicationItem);
-
-            }
-
-            items.OrderByDescending(i => i.LastUpdatedTime);
-
-            feed.Items = items;
+        private FileContentResult WriteRssToFile(SyndicationFeed feed)
+        {
             var settings = new XmlWriterSettings
             {
                 Encoding = Encoding.UTF8,
@@ -98,6 +85,40 @@ namespace dkx86weblog.Controllers
                 }
                 return File(stream.ToArray(), "application/rss+xml; charset=utf-8");
             }
+        }
+
+        private async Task<List<SyndicationItem>> GetPhotos()
+        {
+            List<SyndicationItem> items = new List<SyndicationItem>();
+            var photos = await _photoService.ListPhotosForRssAsync(RSS_PHOTO_FEED_SIZE);
+            foreach (var photo in photos)
+            {
+                var photoUrl = Url.Action("Index", "Photo", null, HttpContext.Request.Scheme);
+                var title = "Photo " + photo.Time;
+                var description = photo.Title == null ? String.Empty : photo.Title;
+                var syndicationItem = new SyndicationItem(title, description, new Uri(photoUrl), photo.ID.ToString(), photo.Time);
+                syndicationItem.PublishDate = photo.Time;
+                syndicationItem.ElementExtensions.Add(new XElement("enclosure", new XAttribute("type", "image/jpeg"), new XAttribute("url", "/photos/" + photo.GetPreviewFileName())).CreateReader());
+
+                items.Add(syndicationItem);
+            }
+            return items;
+        }
+
+        private async Task<List<SyndicationItem>> GetBlogPosts()
+        {
+            List<SyndicationItem> items = new List<SyndicationItem>();
+            var postings = await _blogService.ListBlogForRssAsync(RSS_BLOG_FEED_SIZE);
+            foreach (var post in postings)
+            {
+                var postUrl = Url.Action("Post", "Blog", new { id = post.ID }, HttpContext.Request.Scheme);
+                var title = post.Title;
+                var description = post.GetPreview();
+                var syndicationItem = new SyndicationItem(title, description, new Uri(postUrl), post.ID.ToString(), post.CreateTime);
+                syndicationItem.PublishDate = post.CreateTime;
+                items.Add(syndicationItem);
+            }
+            return items;
         }
     }
 }
