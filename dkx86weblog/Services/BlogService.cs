@@ -2,6 +2,7 @@
 using dkx86weblog.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace dkx86weblog.Services
     public class BlogService
     {
         private readonly ApplicationDbContext _context;
-
+        
         public BlogService(ApplicationDbContext context)
         {
             _context = context;
@@ -45,6 +46,11 @@ namespace dkx86weblog.Services
 
             _context.Add(post);
             await _context.SaveChangesAsync();
+        }
+
+        internal async Task<List<Post>> ListBlogForRssAsync(int itemsCount)
+        {
+            return await _context.Post.Where(p => p.Published).OrderByDescending(p => p.CreateTime).Take(itemsCount).ToListAsync();
         }
 
         internal bool PostExists(Guid id)

@@ -2,24 +2,32 @@
     ViewData["Title"] = "Home";
 }
 
-    <div class="text-center mt-5">
-        <!--------------------------------------Avatar and title --------------------------------------->
-        <div class="row">
-            <div class="text-center col-12">
-                <img src="userpic.jpg" class="rounded-circle userpic" />
-                <h3 class="neon-text">Dmitry Kuznetsov</h3>
-                <small class="neon-text">IT・Photography・Otaku Culture</small>
-            </div>
-        </div>
-
-        <!------------------------------------------- SNS ---------------------------------------------->
-        <hr class="w-25" />
-        <div class="row m-4">
-            <div class="col-12">
-                <a href="https://vk.com/dkx86" target="_blank" class="p-2"><img src="~/vk.png" /></a>
-                <a href="https://twitter.com/dkx86ru" target="_blank" class="p-2"><img src="~/tw.png" /></a>
-                <a href="https://github.com/dkx86" target="_blank" class="p-2"><img src="~/git.png" /></a>
-            </div>
-
+<div class="text-center mt-5">
+    <!--------------------------------------Avatar and title --------------------------------------->
+    <div class="row">
+        <div class="text-center col-12">
+            <img src="userpic.jpg" class="rounded-circle userpic" />
+            <h3 class="neon-text">Dmitry Kuznetsov</h3>
+            <small class="neon-text">IT・Photography・Otaku Culture</small>
         </div>
     </div>
+
+    <!------------------------------------------- SNS ---------------------------------------------->
+    <hr class="w-25" />
+    <div class="row m-2">
+        <div class="col-12">
+            <a href="https://vk.com/dkx86" target="_blank" class="p-2 btn">
+                <img src="~/vk.png" class="glitchImage" />
+            </a>
+            <a href="https://twitter.com/dkx86ru" target="_blank" class="p-2 btn">
+                <img src="~/tw.png" class="glitchImage" />
+            </a>
+            <a href="https://github.com/dkx86" target="_blank" class="p-2 btn">
+                <img src="~/git.png" class="glitchImage" />
+            </a>
+            <a class="p-2 btn" asp-area="" asp-controller="Home" target="_blank" asp-action="Rss">
+                <img src="~/rss.png" class="glitchImage" />
+            </a>
+        </div>
+    </div>
+</div>

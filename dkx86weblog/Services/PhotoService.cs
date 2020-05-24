@@ -45,6 +45,11 @@ namespace dkx86weblog.Services
             await _context.SaveChangesAsync();
         }
 
+        internal async Task<List<Photo>> ListPhotosForRssAsync(int itemsCount)
+        {
+            return await _context.Photo.OrderByDescending(p => p.Time).Take(itemsCount).ToListAsync();
+        }
+
         internal async Task<PhotoViewModel> LoadPhotosAsync(int page)
         {
             var itemsAll = _context.Photo.OrderByDescending(p => p.Time);
