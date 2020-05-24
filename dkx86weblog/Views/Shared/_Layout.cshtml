@@ -35,7 +35,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand glitch" asp-area="" asp-controller="Home" asp-action="Index"  >「 dkx86・weblog 」</a>
+                <a class="navbar-brand glitch" asp-area="" asp-controller="Home" asp-action="Index" >「 dkx86・weblog 」</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -73,7 +73,12 @@
         <div class="container">
             
             <div class="row">
-                <small class="col-12 text-wrap">&copy; 2020 - Dmitry Kuznetsov aka 「dkx86」</small>
+                <small class="col-12 text-wrap">
+                    &copy; 2020 - Dmitry Kuznetsov aka 「dkx86」
+                    <a class="" asp-area="" asp-controller="Home" target="_blank" asp-action="Rss">
+                        <img src="~/rss.gif" alt="RSS feed" title="RSS feed" />
+                    </a>
+                </small>
             </div>
             <div class="row">
                 <div class="col-12 text-wrap">
@@ -85,7 +90,6 @@
                             Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
                         </a>
                     </small>
-
                 </div>
             </div>
             
