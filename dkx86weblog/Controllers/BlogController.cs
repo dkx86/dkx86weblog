@@ -51,27 +51,14 @@ namespace dkx86weblog.Controllers
 
         // GET: Blog/Create
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var post = new Post();
+            var newPostId = await _service.CreatePostAsync(post);
+            return RedirectToAction(nameof(Edit), new { id = newPostId });
         }
 
-        // POST: Blog/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Body")] Post post)
-        {
-            if (ModelState.IsValid)
-            {
-                await _service.CreatePostAsync(post);
-                return RedirectToAction(nameof(Manage));
-            }
-            return View(post);
-        }
-
+        
         // GET: Blog/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(Guid? id)
@@ -86,6 +73,7 @@ namespace dkx86weblog.Controllers
             {
                 return NotFound();
             }
+            ViewData["lastSavedDate"] = DateTime.Now;
             return View(post);
         }
 
@@ -107,7 +95,7 @@ namespace dkx86weblog.Controllers
                 if(await _service.EditPostAsync(id, post) == null)
                     return NotFound();
 
-                return RedirectToAction(nameof(Index));
+                ViewData["lastSavedDate"] = DateTime.Now;
             }
             return View(post);
         }
