@@ -38,7 +38,7 @@ namespace dkx86weblog.Services
             return new BlogViewModel(itemsForPage, pageModel);
         }
 
-        internal async Task CreatePostAsync(Post post)
+        internal async Task<Guid> CreatePostAsync(Post post)
         {
             post.ID = Guid.NewGuid();
             post.CreateTime = DateTime.Now;
@@ -46,6 +46,7 @@ namespace dkx86weblog.Services
 
             _context.Add(post);
             await _context.SaveChangesAsync();
+            return post.ID;
         }
 
         internal async Task<List<Post>> ListBlogForRssAsync(int itemsCount)

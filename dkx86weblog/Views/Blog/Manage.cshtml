@@ -42,6 +42,8 @@
                     @Html.DisplayFor(modelItem => item.Published)
                 </td>
                 <td>
+                    <a asp-action="Post" asp-route-id="@item.ID" class="btn btn-info m-1">Details</a>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-primary m-1">Edit</a>
                     @if (!item.Published)
                     {
                         <a asp-action="Publish" class="btn btn-success m-1" asp-route-id="@item.ID">Publish</a>
@@ -50,10 +52,6 @@
                     {
                         <a asp-action="Unpublish" class="btn btn-warning m-1" asp-route-id="@item.ID">Unpublish</a>
                     }
-
-
-                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-primary m-1">Edit</a> 
-                    <a asp-action="Post" asp-route-id="@item.ID" class="btn btn-info m-1">Details</a> 
                     <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger m-1">Delete</a>
                 </td>
             </tr>

@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h2>Edit</h2>
 
-<h4>Post</h4>
+<p>Last save: @ViewData["lastSavedDate"]</p>
 <hr />
 <div class="row">
     <div class="col-12">
@@ -26,13 +26,15 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Manage" class="btn btn-secondary">Close</a>
+                <a asp-action="Delete" asp-route-id="@Model.ID" class="btn btn-danger ml-2">Delete</a>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    
 </div>
 
 @section Scripts {
