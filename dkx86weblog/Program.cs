@@ -32,10 +32,14 @@ namespace dkx86weblog
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+            Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureKestrel((context, options) =>
+                    {
+                        // Handle requests up to 256 MB
+                        options.Limits.MaxRequestBodySize = 268_435_456;
+                    })
+                    .UseStartup<Startup>();
                 });
     }
 }

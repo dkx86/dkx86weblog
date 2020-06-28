@@ -1,0 +1,69 @@
+﻿@model dkx86weblog.Models.DigitalPackageViewModel
+
+@{
+    ViewData["Title"] = "Manage downloads";
+}
+
+<h1>MANAGE DOWNLOADS</h1>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+<table class="table w-100">
+    <thead>
+        <tr>
+            <th>
+                Preview File Name
+            </th>
+            <th>
+                Package File Name
+            </th>
+            <th>
+                Title / Description
+            </th>
+            <th>
+                Upload Date
+            </th>
+            <th>
+                File Type / Size
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>
+                    <img src="~/downloads/@item.PreviewFileName" class="img-thumbnail"/>
+                </td>
+                <td>
+                    <a href="~/downloads/@item.PackageFileName">@item.PackageFileName</a>
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)<br/><br />
+                    @Html.DisplayFor(modelItem => item.Description) 
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.UploadDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileType) / 
+                    @Html.DisplayFor(modelItem => item.FileSize)
+                </td>
+                
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning" >Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
