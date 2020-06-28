@@ -36,8 +36,8 @@ namespace dkx86weblog
                 {
                     webBuilder.ConfigureKestrel((context, options) =>
                     {
-                        // Handle requests up to 256 MB
-                        options.Limits.MaxRequestBodySize = 268_435_456;
+                        // Handle requests up to 512 MB
+                        options.Limits.MaxRequestBodySize = 536_870_912;
                     })
                     .UseStartup<Startup>();
                 });
