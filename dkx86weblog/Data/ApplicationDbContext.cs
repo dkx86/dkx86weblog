@@ -11,5 +11,6 @@ namespace dkx86weblog.Data
         }
         public DbSet<Models.Post> Post { get; set; }
         public DbSet<Models.Photo> Photo { get; set; }
+        public DbSet<Models.DigitalPackage> DigitalPackage { get; set; }
     }
 }
