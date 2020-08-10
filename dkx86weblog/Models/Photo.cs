@@ -20,24 +20,26 @@ namespace dkx86weblog.Models
         [StringLength(512)]
         public string Title { get; set; }
 
+
+        // metadata 
+
         public int Height { get; set; }
         public int Width { get; set; }
 
+        [StringLength(128)]
+        public string CameraName { get; set; }
+
+        [StringLength(16)]
+        public string ExposureTime { get; set; }
+        public int Aperture { get; set; }
+        public int ISO { get; set; }
 
         public string GetPreviewFileName()
         {
             return PREVIEW_PREFIX + FileName;
         }
 
-        public bool IsVertical()
-        {
-            return Height > Width;
-        }
-
-        public bool IsHorizintal()
-        {
-            return Height < Width;
-        }
+       
 
     }
 }

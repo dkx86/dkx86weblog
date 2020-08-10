@@ -1,13 +1,25 @@
-﻿using SixLabors.ImageSharp;
+﻿using Microsoft.VisualBasic.CompilerServices;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
 
 namespace dkx86weblog.Services
 {
+    public class ImageMetadata
+    {
+        public string Camera { get; set; }
+        public string ExposureTime { get; set; }
+        public int ExposureFNumber { get; set; }
+        public int ISO { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
+    }
+
     public class ImageService
     {
         private readonly int JPG_QUALITY = 95;
@@ -40,6 +52,32 @@ namespace dkx86weblog.Services
                 resizeResult.Width = width;
                 return resizeResult;
             }
+        }
+
+        internal ImageMetadata GetImageMetadata(string inputFile)
+        {
+            
+            using (Image image = Image.Load(inputFile))
+            {
+                ImageMetadata imageMetadata = new ImageMetadata();
+                var metadata = image.Metadata;
+                if (metadata == null)
+                    return null;
+                var exif = metadata.ExifProfile;
+                if (exif == null)
+                    return null;
+
+                imageMetadata.Camera = exif.GetValue(ExifTag.Make).ToString() + ' ' + exif.GetValue(ExifTag.Model).ToString();
+                imageMetadata.ISO = int.Parse(exif.GetValue(ExifTag.ISOSpeedRatings).ToString());
+                imageMetadata.ExposureTime = exif.GetValue(ExifTag.ExposureTime).ToString();
+                imageMetadata.ExposureFNumber = int.Parse(exif.GetValue(ExifTag.FNumber).ToString());
+
+                imageMetadata.Height = image.Height;
+                imageMetadata.Width = image.Width;
+
+                return imageMetadata;
+            }
+                
         }
 
         public ImageResizeResult ResizeByWidth(string inputFile, string outputFile, int width)

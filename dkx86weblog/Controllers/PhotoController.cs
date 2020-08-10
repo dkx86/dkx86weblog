@@ -52,6 +52,14 @@ namespace dkx86weblog.Controllers
             return View();
         }
 
+        // GET: Photo/ReadAllMetadata
+        [Authorize]
+        public async Task<IActionResult> ReadAllMetadata()
+        {
+            await _photoService.ReadMetadataForAllPhotos();
+            return RedirectToAction(nameof(Manage));
+        }
+
         // POST: Photo/Upload
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
