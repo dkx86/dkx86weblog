@@ -29,7 +29,6 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FileName)
                     <a class="btn square" style="background-image: url('/photos/@item.GetPreviewFileName()')" asp-action="Details" asp-route-id="@item.ID" />
                 </td>
                 <td>

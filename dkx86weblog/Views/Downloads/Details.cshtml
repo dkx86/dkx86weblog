@@ -1,0 +1,25 @@
+﻿@model dkx86weblog.Models.DigitalPackage
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="row ">
+    <div class="col-sm-12 col-md-10 m-auto">
+        <div class="card border-0">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="~/downloads/@Model.PreviewFileName" class="card-img ">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><small>@Model.UploadDate</small></h6>
+                        <p class="card-text">@Model.Description</p>
+                        <a href="~/downloads/@Model.PackageFileName" class="btn btn-dark">@Model.FileType.ToString() ( @Model.FileSizePretty() )</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -11,10 +11,10 @@
         @foreach (var item in Model.Items)
         {
 
-            <div class="card nrw-card-bg  mb-4">
-                <div class="card-body">
+            <div class="card nrw-card-bg mb-4">
+                <div class="card-body glitchPost">
                     <h6 class="card-subtitle small mb-2 text-muted">@item.CreateTime</h6>
-                    <h4 class="card-title ml-2 mb-4">@item.Title</h4>
+                    <h4 class="card-title ml-2 mb-4 glitchTitle">@item.Title</h4>
                     <p class="card-text post_body ml-2">@item.GetPreview()</p>
                     <a asp-action="Post" asp-route-id="@item.ID" class="card-link stretched-link"></a>
                 </div>

@@ -66,7 +66,7 @@ namespace dkx86weblog.Controllers
             }
 
             await _photoService.UploadAsync(photo, photoFile);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Manage));
 
         }
 
@@ -127,7 +127,6 @@ namespace dkx86weblog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var photo = await _photoService.FindPhotoAsync(id);
             await _photoService.RemovePhotoAsync(id);
             return RedirectToAction(nameof(Manage));
         }

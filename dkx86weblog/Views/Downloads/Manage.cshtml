@@ -1,0 +1,44 @@
+﻿@model dkx86weblog.Models.DigitalPackageViewModel
+
+@{
+    ViewData["Title"] = "Manage downloads";
+}
+
+<h1>MANAGE DOWNLOADS</h1>
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+
+
+@foreach (var item in Model.Items)
+{
+    <div class="row ">
+        <div class="col-sm-12 col-md-10 m-auto">
+            <div class="card mb-4 border-0">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="~/downloads/@item.PreviewFileName" class="card-img img-thumbnail">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted"><small>@item.UploadDate</small></h6>
+                            <p class="card-text">@item.Description</p>
+                            <p class="card-text">@item.PackageFileName | @item.FileType | @item.FileSize (bytes)</p>
+                            <a href="~/downloads/@item.PackageFileName" class="btn btn-dark">@item.FileType.ToString() ( @item.FileSizePretty() )</a>
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
