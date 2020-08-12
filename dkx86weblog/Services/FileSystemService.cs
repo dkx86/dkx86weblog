@@ -82,6 +82,11 @@ namespace dkx86weblog.Services
             Directory.Delete(target_dir, false);
         }
 
+        internal string GetFilePath(string dirPath, string fileName)
+        {
+            return Path.Combine(_appEnvironment.WebRootPath, dirPath, fileName);
+        }
+
         public string CreateDirIfNotExists(string dirPath, string subDirPath)
         {
             var dirFullPath = Path.Combine(_appEnvironment.WebRootPath, dirPath, subDirPath);

@@ -40,13 +40,17 @@ namespace dkx86weblog.Services
             photo.ID = Guid.NewGuid();
             photo.Time = DateTime.Now;
             photo.FileName = Path.GetFileName(photoFile.FileName);
-            
-            photo.Height = resizeResult.OriginalHeight;
-            photo.Width = resizeResult.OriginalWidth;
-            photo.CameraName = meta.Camera;
-            photo.ExposureTime = meta.ExposureTime;
-            photo.Aperture = meta.ExposureFNumber;
-            photo.ISO = meta.ISO;
+
+            if (meta != null)
+            {
+                photo.Height = resizeResult.OriginalHeight;
+                photo.Width = resizeResult.OriginalWidth;
+                photo.CameraName = meta.Camera;
+                photo.ExposureTime = meta.ExposureTime;
+                photo.Aperture = meta.ExposureFNumber;
+                photo.ISO = meta.ISO;
+                photo.FocalLength = meta.FocalLength;
+            }
 
             _context.Add(photo);
             await _context.SaveChangesAsync();
@@ -57,7 +61,11 @@ namespace dkx86weblog.Services
             var photos = await _context.Photo.ToListAsync();
             foreach(var photo in photos)
             {
-                var meta = _imageService.GetImageMetadata(photo.FileName);
+                var filePath = _filesystemService.GetFilePath(PHOTOS_DIR_NAME, photo.FileName);
+                var meta = _imageService.GetImageMetadata(filePath);
+
+                if (meta == null)
+                    continue;
 
                 photo.Height = meta.Height;
                 photo.Width = meta.Width;
@@ -65,6 +73,7 @@ namespace dkx86weblog.Services
                 photo.ExposureTime = meta.ExposureTime;
                 photo.Aperture = meta.ExposureFNumber;
                 photo.ISO = meta.ISO;
+                photo.FocalLength = meta.FocalLength;
 
                 _context.Update(photo);
             }

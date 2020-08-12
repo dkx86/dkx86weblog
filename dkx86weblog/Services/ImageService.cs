@@ -5,6 +5,7 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using SixLabors.ImageSharp.Processing;
+using SQLitePCL;
 using System;
 using System.IO;
 
@@ -12,12 +13,13 @@ namespace dkx86weblog.Services
 {
     public class ImageMetadata
     {
-        public string Camera { get; set; }
-        public string ExposureTime { get; set; }
-        public int ExposureFNumber { get; set; }
-        public int ISO { get; set; }
-        public int Height { get; set; }
-        public int Width { get; set; }
+        public string Camera { get; internal set; }
+        public string ExposureTime { get; internal set; }
+        public double ExposureFNumber { get; internal set; }
+        public double FocalLength { get; internal set; }
+        public int ISO { get; internal set; }
+        public int Height { get; internal set; }
+        public int Width { get; internal set; }
     }
 
     public class ImageService
@@ -29,7 +31,7 @@ namespace dkx86weblog.Services
             using (Image image = Image.Load(inputFile, out IImageFormat format))
             {
                 ImageResizeResult resizeResult = new ImageResizeResult(image.Height, image.Width);
-                
+
                 if (!NeedResize(image, longEdgeSize))
                     return resizeResult;
 
@@ -56,7 +58,7 @@ namespace dkx86weblog.Services
 
         internal ImageMetadata GetImageMetadata(string inputFile)
         {
-            
+
             using (Image image = Image.Load(inputFile))
             {
                 ImageMetadata imageMetadata = new ImageMetadata();
@@ -67,17 +69,59 @@ namespace dkx86weblog.Services
                 if (exif == null)
                     return null;
 
-                imageMetadata.Camera = exif.GetValue(ExifTag.Make).ToString() + ' ' + exif.GetValue(ExifTag.Model).ToString();
-                imageMetadata.ISO = int.Parse(exif.GetValue(ExifTag.ISOSpeedRatings).ToString());
-                imageMetadata.ExposureTime = exif.GetValue(ExifTag.ExposureTime).ToString();
-                imageMetadata.ExposureFNumber = int.Parse(exif.GetValue(ExifTag.FNumber).ToString());
+                // Camera model
+                var cameraMaker = exif.GetValue(ExifTag.Make);
+                var cameraModel = exif.GetValue(ExifTag.Model);
+                if (cameraMaker != null && cameraModel != null)
+                {
+                    imageMetadata.Camera = cameraMaker.ToString() + ' ' + cameraModel.ToString();
+                }
 
+                // ISO
+                var iso = exif.GetValue(ExifTag.ISOSpeedRatings).ToString();
+                imageMetadata.ISO = string.IsNullOrEmpty(iso) ? -1 : int.Parse(iso);
+
+                // Exposure time
+                var exposureTime = exif.GetValue(ExifTag.ExposureTime);
+                if (exposureTime != null)
+                {
+                    imageMetadata.ExposureTime = exposureTime.ToString();
+                }
+
+                // Aperture value (f-stop)
+                var fNumber = exif.GetValue(ExifTag.FNumber);
+                if (fNumber != null && fNumber.ToString().Length > 0)
+                {
+                    imageMetadata.ExposureFNumber = CalcFractionalValue(fNumber.ToString());
+                }
+
+                //Focal length
+                var focalLength = exif.GetValue(ExifTag.FocalLength);
+                if (focalLength != null && focalLength.ToString().Length > 0)
+                {
+                    imageMetadata.FocalLength = CalcFractionalValue(focalLength.ToString());
+                }
+
+
+                // height and width
                 imageMetadata.Height = image.Height;
                 imageMetadata.Width = image.Width;
 
                 return imageMetadata;
             }
-                
+
+        }
+
+        private double CalcFractionalValue(string val)
+        {
+            if (!val.Contains("/"))
+                return double.Parse(val);
+
+            string[] parts = val.Split("/");
+            double left = double.Parse(parts[0]);
+            double right = double.Parse(parts[1]);
+
+            return left / right;
         }
 
         public ImageResizeResult ResizeByWidth(string inputFile, string outputFile, int width)
