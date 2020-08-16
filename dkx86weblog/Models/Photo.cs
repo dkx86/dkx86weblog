@@ -26,22 +26,34 @@ namespace dkx86weblog.Models
         public int Height { get; set; }
         public int Width { get; set; }
 
+        [Display(Name = "Camera")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "-")]
         [StringLength(128)]
         public string CameraName { get; set; }
 
+        [Display(Name = "Shutter speed")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "-", DataFormatString = "{0}s")]
         [StringLength(16)]
         public string ExposureTime { get; set; }
 
-        public double Aperture { get; set; }
-        public double FocalLength { get; set; }
-        public int ISO { get; set; }
+        [Display(Name = "Aperture")]
+        [DisplayFormat(NullDisplayText = "-", DataFormatString = "f/{0}")]
+        public double? Aperture { get; set; }
+
+        [Display(Name = "Focal length")]
+        [DisplayFormat(NullDisplayText = "-", DataFormatString = "{0}mm")]
+        public double? FocalLength { get; set; }
+
+        [Display(Name = "ISO")]
+        [DisplayFormat(NullDisplayText = "-")]
+        public int? ISO { get; set; }
 
         public string GetPreviewFileName()
         {
             return PREVIEW_PREFIX + FileName;
         }
 
-       
+
 
     }
 }

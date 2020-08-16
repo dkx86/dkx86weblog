@@ -14,35 +14,17 @@
 
     <hr />
 
+    <div class="row">
+        <p class="col-12">@Html.DisplayFor(model => model.Title)</p>
+        <p class="col-12">
+            <a href="~/photos/@Model.FileName" class="btn btn-dark"> @Html.DisplayFor(model => model.Width) x @Html.DisplayFor(model => model.Height)</a>
+        </p>
+    </div>
+
     <dl class="row">
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Time)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Time)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Height)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Height)
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Width)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Width)
-        </dd>
-
+       
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CameraName)
         </dt>

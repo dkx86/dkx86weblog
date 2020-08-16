@@ -13,11 +13,11 @@ namespace dkx86weblog.Services
 {
     public class ImageMetadata
     {
-        public string Camera { get; internal set; }
-        public string ExposureTime { get; internal set; }
-        public double ExposureFNumber { get; internal set; }
-        public double FocalLength { get; internal set; }
-        public int ISO { get; internal set; }
+        public string Camera { get; internal set; } = null;
+        public string ExposureTime { get; internal set; } = null;
+        public double? ExposureFNumber { get; internal set; } = null;
+        public double? FocalLength { get; internal set; } = null;
+        public int? ISO { get; internal set; } = null;
         public int Height { get; internal set; }
         public int Width { get; internal set; }
     }
@@ -78,8 +78,12 @@ namespace dkx86weblog.Services
                 }
 
                 // ISO
-                var iso = exif.GetValue(ExifTag.ISOSpeedRatings).ToString();
-                imageMetadata.ISO = string.IsNullOrEmpty(iso) ? -1 : int.Parse(iso);
+                var iso = exif.GetValue(ExifTag.ISOSpeedRatings);
+                if(iso != null)
+                {
+                    imageMetadata.ISO = int.Parse(iso.ToString());
+                }
+                
 
                 // Exposure time
                 var exposureTime = exif.GetValue(ExifTag.ExposureTime);
