@@ -5,28 +5,17 @@
 }
 
 @await Html.PartialAsync("_PaginationPartial", @Model.PageModel)
-<div class="card-columns">
-    @foreach (var photo in Model.Items)
-    {
-        <div class="card" id="tile_@photo.ID">
-            <a class="" asp-action="Details" asp-route-id="@photo.ID" >
-                <img src="/photos/@photo.GetPreviewFileName()" class="card-img-top" alt="@photo.Title" title="@photo.Title" />
+
+@foreach (var photo in Model.Items)
+{
+    <div class="row mb-2">
+        <div class="col-sm-12 col-md-6 col-lg-8 m-auto text-center">
+            <a asp-action="Details" asp-route-id="@photo.ID">
+                <img src="/photos/@photo.GetPreviewFileName()" class="img-fluid" alt="@photo.Title" title="@photo.Title" />
             </a>
         </div>
-    }
-</div>
+    </div>
+}
 
-<div class="JesterBox">
-    @foreach (var photo in Model.Items)
-    {
-        <div id="photo_@photo.ID" class="JesterBoxDiv">
-            <img src="~/photos/@photo.GetPreviewFileName()" onClick="history.go(-1);" alt="@photo.Title" title="@photo.Title" />
-            <div class="overlay">
-                <a href="~/photos/@photo.FileName" class="btn btn-danger" download>&#129095;</a>
-            </div>
-        </div>
-
-    }
-</div>
 
 @await Html.PartialAsync("_PaginationPartial", @Model.PageModel)

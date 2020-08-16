@@ -17,6 +17,7 @@ namespace dkx86weblog.Models
         [DataType(DataType.DateTime)]
         public DateTime Time { get; set; }
 
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "No title")]
         [StringLength(512)]
         public string Title { get; set; }
 
@@ -47,6 +48,14 @@ namespace dkx86weblog.Models
         [Display(Name = "ISO")]
         [DisplayFormat(NullDisplayText = "-")]
         public int? ISO { get; set; }
+
+        public string FullSizeDemensions
+        {
+            get
+            {
+                return Width + "x" + Height;
+            }
+        }
 
         public string GetPreviewFileName()
         {
