@@ -33,7 +33,6 @@ namespace dkx86weblog.Controllers
         }
 
         // GET: Photo/Details/5
-        [Authorize]
         public async Task<IActionResult> Details(Guid? id)
         {
             var photo = await _photoService.FindPhotoAsync(id);
