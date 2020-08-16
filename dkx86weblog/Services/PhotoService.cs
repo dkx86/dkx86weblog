@@ -33,15 +33,50 @@ namespace dkx86weblog.Services
             //Make preview file
             string previewFilePath = Path.Combine(photoDirPath, Photo.PREVIEW_PREFIX + Path.GetFileName(photoFile.FileName));
             var resizeResult = _imageService.Resize(filePath, previewFilePath, Photo.MAX_PREVIEW_LONG_SIDE);
+            var meta = _imageService.GetImageMetadata(filePath);
+            
 
             //save model
             photo.ID = Guid.NewGuid();
             photo.Time = DateTime.Now;
             photo.FileName = Path.GetFileName(photoFile.FileName);
-            photo.Height = resizeResult.OriginalHeight;
-            photo.Width = resizeResult.OriginalWidth;
+
+            if (meta != null)
+            {
+                photo.Height = resizeResult.OriginalHeight;
+                photo.Width = resizeResult.OriginalWidth;
+                photo.CameraName = meta.Camera;
+                photo.ExposureTime = meta.ExposureTime;
+                photo.Aperture = meta.ExposureFNumber;
+                photo.ISO = meta.ISO;
+                photo.FocalLength = meta.FocalLength;
+            }
 
             _context.Add(photo);
+            await _context.SaveChangesAsync();
+        }
+
+        internal async Task ReadMetadataForAllPhotos()
+        {
+            var photos = await _context.Photo.ToListAsync();
+            foreach(var photo in photos)
+            {
+                var filePath = _filesystemService.GetFilePath(PHOTOS_DIR_NAME, photo.FileName);
+                var meta = _imageService.GetImageMetadata(filePath);
+
+                if (meta == null)
+                    continue;
+
+                photo.Height = meta.Height;
+                photo.Width = meta.Width;
+                photo.CameraName = meta.Camera;
+                photo.ExposureTime = meta.ExposureTime;
+                photo.Aperture = meta.ExposureFNumber;
+                photo.ISO = meta.ISO;
+                photo.FocalLength = meta.FocalLength;
+
+                _context.Update(photo);
+            }
             await _context.SaveChangesAsync();
         }
 

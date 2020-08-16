@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using dkx86weblog.Data;
@@ -9,9 +10,10 @@ using dkx86weblog.Data;
 namespace dkx86weblog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200812182521_PhotoMetadata")]
+    partial class PhotoMetadata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,8 +261,8 @@ namespace dkx86weblog.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<double?>("Aperture")
-                        .HasColumnType("double precision");
+                    b.Property<int>("Aperture")
+                        .HasColumnType("integer");
 
                     b.Property<string>("CameraName")
                         .HasColumnType("character varying(128)")
@@ -274,13 +276,10 @@ namespace dkx86weblog.Migrations
                         .HasColumnType("character varying(128)")
                         .HasMaxLength(128);
 
-                    b.Property<double?>("FocalLength")
-                        .HasColumnType("double precision");
-
                     b.Property<int>("Height")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ISO")
+                    b.Property<int>("ISO")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Time")

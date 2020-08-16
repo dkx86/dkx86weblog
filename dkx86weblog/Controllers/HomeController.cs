@@ -93,7 +93,7 @@ namespace dkx86weblog.Controllers
             var photos = await _photoService.ListPhotosForRssAsync(RSS_PHOTO_FEED_SIZE);
             foreach (var photo in photos)
             {
-                var photoUrl = Url.Action("Index", "Photo", null, HttpContext.Request.Scheme);
+                var photoUrl = Url.Action("Details", "Photo", new { id = photo.ID }, HttpContext.Request.Scheme);
                 var title = "Photo " + photo.Time;
                 var description = photo.Title == null ? String.Empty : photo.Title;
                 var syndicationItem = new SyndicationItem(title, description, new Uri(photoUrl), photo.ID.ToString(), photo.Time);

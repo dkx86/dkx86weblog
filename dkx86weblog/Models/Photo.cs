@@ -17,27 +17,52 @@ namespace dkx86weblog.Models
         [DataType(DataType.DateTime)]
         public DateTime Time { get; set; }
 
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "No title")]
         [StringLength(512)]
         public string Title { get; set; }
+
+
+        // metadata 
 
         public int Height { get; set; }
         public int Width { get; set; }
 
+        [Display(Name = "Camera")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "-")]
+        [StringLength(128)]
+        public string CameraName { get; set; }
+
+        [Display(Name = "Shutter speed")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "-", DataFormatString = "{0}s")]
+        [StringLength(16)]
+        public string ExposureTime { get; set; }
+
+        [Display(Name = "Aperture")]
+        [DisplayFormat(NullDisplayText = "-", DataFormatString = "f/{0}")]
+        public double? Aperture { get; set; }
+
+        [Display(Name = "Focal length")]
+        [DisplayFormat(NullDisplayText = "-", DataFormatString = "{0}mm")]
+        public double? FocalLength { get; set; }
+
+        [Display(Name = "ISO")]
+        [DisplayFormat(NullDisplayText = "-")]
+        public int? ISO { get; set; }
+
+        public string FullSizeDemensions
+        {
+            get
+            {
+                return Width + "x" + Height;
+            }
+        }
 
         public string GetPreviewFileName()
         {
             return PREVIEW_PREFIX + FileName;
         }
 
-        public bool IsVertical()
-        {
-            return Height > Width;
-        }
 
-        public bool IsHorizintal()
-        {
-            return Height < Width;
-        }
 
     }
 }

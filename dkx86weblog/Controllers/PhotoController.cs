@@ -33,7 +33,6 @@ namespace dkx86weblog.Controllers
         }
 
         // GET: Photo/Details/5
-        [Authorize]
         public async Task<IActionResult> Details(Guid? id)
         {
             var photo = await _photoService.FindPhotoAsync(id);
@@ -50,6 +49,14 @@ namespace dkx86weblog.Controllers
         public IActionResult Upload()
         {
             return View();
+        }
+
+        // GET: Photo/ReadAllMetadata
+        [Authorize]
+        public async Task<IActionResult> ReadAllMetadata()
+        {
+            await _photoService.ReadMetadataForAllPhotos();
+            return RedirectToAction(nameof(Manage));
         }
 
         // POST: Photo/Upload
