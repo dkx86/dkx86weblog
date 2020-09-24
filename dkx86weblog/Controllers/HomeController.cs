@@ -18,21 +18,21 @@ namespace dkx86weblog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly BlogService _blogService;
         private readonly PhotoService _photoService;
+        private readonly DigitalPackagesService _digitalPackagesService;
 
         private readonly static int RSS_BLOG_FEED_SIZE = 12;
         private readonly static int RSS_PHOTO_FEED_SIZE = 12;
 
 
-        public HomeController(ILogger<HomeController> logger, BlogService blogService, PhotoService photoService, IHttpContextAccessor httpContextAccessor)
+        public HomeController(BlogService blogService, PhotoService photoService, 
+            IHttpContextAccessor httpContextAccessor, DigitalPackagesService digitalPackagesService)
         {
-            _logger = logger;
             _blogService = blogService;
             _photoService = photoService;
-
+            _digitalPackagesService = digitalPackagesService;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -59,6 +59,24 @@ namespace dkx86weblog.Controllers
 
             var items = new List<SyndicationItem>();
             items.AddRange(await GetBlogPosts());
+            items.AddRange(await GetPhotos());
+            items.AddRange(await GetDigitalPackages());
+            feed.Items = items.OrderByDescending(i => i.PublishDate);
+
+            return WriteRssToFile(feed);
+        }
+
+        [ResponseCache(Duration = 1200)]
+        [HttpGet]
+        public async Task<IActionResult> RssPhoto()
+        {
+            var request = _httpContextAccessor.HttpContext.Request;
+            var hostname = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+
+            var feed = new SyndicationFeed("「 dkx86・weblog 」", "IT・Photography・Otaku Culture", new Uri(hostname), hostname + "/Home/RssPhoto", DateTime.Now);
+            feed.Copyright = new TextSyndicationContent($"{DateTime.Now.Year} Dmitry Kuznetsov aka 「dkx86」");
+
+            var items = new List<SyndicationItem>();
             items.AddRange(await GetPhotos());
             feed.Items = items.OrderByDescending(i => i.PublishDate);
 
@@ -94,8 +112,17 @@ namespace dkx86weblog.Controllers
             foreach (var photo in photos)
             {
                 var photoUrl = Url.Action("Details", "Photo", new { id = photo.ID }, HttpContext.Request.Scheme);
-                var title = "Photo " + photo.Time;
-                var description = photo.Title == null ? String.Empty : photo.Title;
+                var title = "Photo: ";
+                var description = string.Empty;
+                if(photo.Title != null)
+                {
+                    title += photo.Title;
+                    description = photo.Title;
+                }
+                else
+                {
+                    title += photo.Time;
+                }
                 var syndicationItem = new SyndicationItem(title, description, new Uri(photoUrl), photo.ID.ToString(), photo.Time);
                 syndicationItem.PublishDate = photo.Time;
                 syndicationItem.ElementExtensions.Add(new XElement("enclosure", new XAttribute("type", "image/jpeg"), new XAttribute("url", "/photos/" + photo.GetPreviewFileName())).CreateReader());
@@ -116,6 +143,23 @@ namespace dkx86weblog.Controllers
                 var description = post.GetPreview();
                 var syndicationItem = new SyndicationItem(title, description, new Uri(postUrl), post.ID.ToString(), post.CreateTime);
                 syndicationItem.PublishDate = post.CreateTime;
+                items.Add(syndicationItem);
+            }
+            return items;
+        }
+
+        private async Task<List<SyndicationItem>> GetDigitalPackages()
+        {
+            List<SyndicationItem> items = new List<SyndicationItem>();
+            var packages = await _digitalPackagesService.ListPackagesForRssAsync(RSS_BLOG_FEED_SIZE);
+            foreach (var pkg in packages)
+            {
+                var postUrl = Url.Action("Details", "Downloads", new { id = pkg.ID }, HttpContext.Request.Scheme);
+                var title = pkg.Title;
+                var description = pkg.Description;
+                var syndicationItem = new SyndicationItem(title, description, new Uri(postUrl), pkg.ID.ToString(), pkg.UploadDate);
+                syndicationItem.PublishDate = pkg.UploadDate;
+                syndicationItem.ElementExtensions.Add(new XElement("enclosure", new XAttribute("type", "image/jpeg"), new XAttribute("url", "/downloads//" + pkg.PreviewFileName)).CreateReader());
                 items.Add(syndicationItem);
             }
             return items;
