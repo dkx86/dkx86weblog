@@ -41,10 +41,11 @@ namespace dkx86weblog.Services
             photo.Time = DateTime.Now;
             photo.FileName = Path.GetFileName(photoFile.FileName);
 
+            photo.Height = resizeResult.OriginalHeight;
+            photo.Width = resizeResult.OriginalWidth;
+
             if (meta != null)
             {
-                photo.Height = resizeResult.OriginalHeight;
-                photo.Width = resizeResult.OriginalWidth;
                 photo.CameraName = meta.Camera;
                 photo.ExposureTime = meta.ExposureTime;
                 photo.Aperture = meta.ExposureFNumber;

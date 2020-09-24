@@ -32,9 +32,11 @@ namespace dkx86weblog.Services
             {
                 ImageResizeResult resizeResult = new ImageResizeResult(image.Height, image.Width);
 
-                if (!NeedResize(image, longEdgeSize))
+                if (!NeedResize(image, longEdgeSize)) {
+                    SaveMutatedImage(outputFile, image, format);
                     return resizeResult;
-
+                }
+                    
                 int width = 0;
                 int height = 0;
                 if (image.Width > image.Height)

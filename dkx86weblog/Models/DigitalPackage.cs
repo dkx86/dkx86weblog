@@ -7,7 +7,7 @@ namespace dkx86weblog.Models
     {
         public Guid ID { get; set; }
 
-        [StringLength(64)]
+        [StringLength(128)]
         [Display(Name = "Package file name")]
         public string PackageFileName { get; set; }
 
@@ -15,11 +15,11 @@ namespace dkx86weblog.Models
         [Display(Name = "Preview file name")]
         public string PreviewFileName { get; set; }
 
-        [StringLength(64)]
+        [StringLength(128)]
         [Display(Name = "Title")]
         public string Title { get; set; }
 
-        [StringLength(256)]
+        [StringLength(512)]
         [Display(Name = "Description")]
         public string Description { get; set; }
 
