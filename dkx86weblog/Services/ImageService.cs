@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic.CompilerServices;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using SixLabors.ImageSharp.Processing;
-using SQLitePCL;
-using System;
 using System.IO;
 
 namespace dkx86weblog.Services

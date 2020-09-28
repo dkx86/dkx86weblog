@@ -2,7 +2,6 @@
 using dkx86weblog.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -139,7 +138,6 @@ namespace dkx86weblog.Controllers
             foreach (var photo in photos)
             {
                 var photoUrl = Url.Action(photo.FileName, "photos", null, HttpContext.Request.Scheme);
-                    //Url.Action("Details", "Photo", new { id = photo.ID }, HttpContext.Request.Scheme);
                 var title = string.Empty;
                 var description = string.Empty;
                 if (photo.Title != null)
