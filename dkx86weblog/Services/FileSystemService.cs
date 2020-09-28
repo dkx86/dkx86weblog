@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -10,9 +11,11 @@ namespace dkx86weblog.Services
     public class FileSystemService
     {
         private readonly IWebHostEnvironment _appEnvironment;
+        private readonly ILogger<FileSystemService> _logger;
 
-        public FileSystemService(IWebHostEnvironment appEnvironment)
+        public FileSystemService(IWebHostEnvironment appEnvironment, ILogger<FileSystemService> logger)
         {
+            _logger = logger;
             _appEnvironment = appEnvironment;
         }
 
@@ -20,7 +23,10 @@ namespace dkx86weblog.Services
         {
             string path = Path.Combine(_appEnvironment.WebRootPath, dirName, fileName);
             if (!File.Exists(path))
+            {
+                _logger.LogWarning("File {PATH} already removed", path);
                 return;
+            }
 
             try
             {
@@ -28,7 +34,7 @@ namespace dkx86weblog.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                _logger.LogError(e.Message, e);
             }
         }
 
@@ -36,7 +42,10 @@ namespace dkx86weblog.Services
         {
             string path = Path.Combine(_appEnvironment.WebRootPath, dirName, subDirName);
             if (!Directory.Exists(path))
+            {
+                _logger.LogWarning("Directory {PATH} already removed", path);
                 return;
+            }
 
             try
             {
@@ -44,7 +53,7 @@ namespace dkx86weblog.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                _logger.LogError(e.Message, e);
             }
         }
 

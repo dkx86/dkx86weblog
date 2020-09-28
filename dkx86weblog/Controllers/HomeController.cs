@@ -22,13 +22,13 @@ namespace dkx86weblog.Controllers
         private readonly BlogService _blogService;
         private readonly PhotoService _photoService;
         private readonly DigitalPackagesService _digitalPackagesService;
-
+        
         private readonly static int RSS_BLOG_FEED_SIZE = 12;
         private readonly static int RSS_PHOTO_FEED_SIZE = 12;
 
 
-        public HomeController(BlogService blogService, PhotoService photoService, 
-            IHttpContextAccessor httpContextAccessor, DigitalPackagesService digitalPackagesService)
+        public HomeController(BlogService blogService, PhotoService photoService, IHttpContextAccessor httpContextAccessor, 
+            DigitalPackagesService digitalPackagesService)
         {
             _blogService = blogService;
             _photoService = photoService;

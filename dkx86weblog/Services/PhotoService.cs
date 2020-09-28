@@ -2,6 +2,7 @@
 using dkx86weblog.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,9 +17,11 @@ namespace dkx86weblog.Services
         private readonly ApplicationDbContext _context;
         private readonly ImageService _imageService;
         private readonly FileSystemService _filesystemService;
+        private readonly ILogger<PhotoService> _logger;
 
-        public PhotoService(ApplicationDbContext context, ImageService imageService, FileSystemService filesystemService)
+        public PhotoService(ApplicationDbContext context, ImageService imageService, FileSystemService filesystemService, ILogger<PhotoService> logger)
         {
+            _logger = logger;
             _context = context;
             _imageService = imageService;
             _filesystemService = filesystemService;
@@ -53,8 +56,15 @@ namespace dkx86weblog.Services
                 photo.FocalLength = meta.FocalLength;
             }
 
-            _context.Add(photo);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Add(photo);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                _logger.LogError(e.Message, e);
+            }
         }
 
         internal async Task ReadMetadataForAllPhotos()
@@ -76,7 +86,6 @@ namespace dkx86weblog.Services
                 photo.ISO = meta.ISO;
                 photo.FocalLength = meta.FocalLength;
 
-                _context.Update(photo);
             }
             await _context.SaveChangesAsync();
         }
@@ -111,13 +120,23 @@ namespace dkx86weblog.Services
         internal async Task RemovePhotoAsync(Guid? id)
         {
             var photo = await FindPhotoAsync(id);
-            if (photo == null)
+            if (photo == null) 
+            {
+                _logger.LogWarning("Photo {ID} not found!", id);
                 return;
+            }
 
-            _context.Photo.Remove(photo);
-            await _context.SaveChangesAsync();
-            _filesystemService.RemoveFileFromServer(photo.GetPreviewFileName(), PHOTOS_DIR_NAME);
-            _filesystemService.RemoveFileFromServer(photo.FileName, PHOTOS_DIR_NAME);
+            try
+            {
+                _context.Photo.Remove(photo);
+                await _context.SaveChangesAsync();
+                _filesystemService.RemoveFileFromServer(photo.GetPreviewFileName(), PHOTOS_DIR_NAME);
+                _filesystemService.RemoveFileFromServer(photo.FileName, PHOTOS_DIR_NAME);
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                _logger.LogError(e.Message, e);
+            }
         }
 
         internal async Task<Photo> EditPhotoAsync(Guid id, Photo updatedPhoto)
@@ -126,12 +145,11 @@ namespace dkx86weblog.Services
             try
             {
                 photo.Title = updatedPhoto.Title;
-                _context.Update(photo);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
-                return null;
+                _logger.LogError(e.Message, e);
             }
             return photo;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic.CompilerServices;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
@@ -25,6 +26,12 @@ namespace dkx86weblog.Services
     public class ImageService
     {
         private readonly int JPG_QUALITY = 95;
+        private readonly ILogger<ImageService> _logger;
+
+        public ImageService(ILogger<ImageService> logger)
+        {
+            _logger = logger;
+        }
 
         public ImageResizeResult Resize(string inputFile, string outputFile, int longEdgeSize)
         {
@@ -60,7 +67,6 @@ namespace dkx86weblog.Services
 
         internal ImageMetadata GetImageMetadata(string inputFile)
         {
-
             using (Image image = Image.Load(inputFile))
             {
                 ImageMetadata imageMetadata = new ImageMetadata();

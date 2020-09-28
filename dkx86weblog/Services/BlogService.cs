@@ -1,8 +1,10 @@
 ﻿using dkx86weblog.Data;
 using dkx86weblog.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,12 +12,16 @@ namespace dkx86weblog.Services
 {
     public class BlogService
     {
-        private readonly ApplicationDbContext _context;
-        
-        public BlogService(ApplicationDbContext context)
+
+        protected readonly ApplicationDbContext _context;
+        protected readonly ILogger _logger;
+
+        public BlogService(ApplicationDbContext context, ILogger logger)
         {
+            _logger = logger;
             _context = context;
         }
+
 
         internal async Task<BlogViewModel> GetPublishedPostsAsync(int page)
         {
@@ -38,15 +44,26 @@ namespace dkx86weblog.Services
             return new BlogViewModel(itemsForPage, pageModel);
         }
 
-        internal async Task<Guid> CreatePostAsync(Post post)
+        internal async Task<Post> CreatePostAsync()
         {
-            post.ID = Guid.NewGuid();
-            post.CreateTime = DateTime.Now;
-            post.UpdateTime = post.CreateTime;
+            var curentTime = DateTime.Now;
+            var post = new Post
+            {
+                ID = Guid.NewGuid(),
+                CreateTime = curentTime,
+                UpdateTime = curentTime
+            };
 
-            _context.Add(post);
-            await _context.SaveChangesAsync();
-            return post.ID;
+            try
+            {
+                _context.Add(post);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                _logger.LogError(e.Message, e);
+            }
+            return post;
         }
 
         internal async Task<List<Post>> ListBlogForRssAsync(int itemsCount)
@@ -68,17 +85,31 @@ namespace dkx86weblog.Services
         {
             var post = await FindPostAsync(id);
             if (post == null)
+            {
+                _logger.LogError("Post {postId} not found!", id);
                 return;
+            }
 
-            _context.Post.Remove(post);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Remove(post);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                _logger.LogError(e.Message, e);
+            }
         }
 
         internal async Task SwitchPublishStateAsync(Guid? postId, bool publish)
         {
             var post = await FindPostAsync(postId);
             if (post == null)
+            {
+                _logger.LogError("Post {postId} not found!", postId);
                 return;
+            }
+
             if (publish)
             {
                 post.CreateTime = DateTime.Now;
@@ -86,26 +117,37 @@ namespace dkx86weblog.Services
             }
 
             post.Published = publish;
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                _logger.LogError(e.Message, e);
+            }
         }
+
 
         internal async Task<Post> EditPostAsync(Guid id, Post updatedPost)
         {
             var post = await FindPostAsync(id);
+            post.UpdateTime = DateTime.Now;
+            post.Body = updatedPost.Body;
+            post.Title = updatedPost.Title;
+
             try
             {
-                post.UpdateTime = DateTime.Now;
-                post.Body = updatedPost.Body;
-                post.Title = updatedPost.Title;
-
                 _context.Update(post);
                 await _context.SaveChangesAsync();
+                return post;
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
+                _logger.LogError(e.Message, e);
                 return null;
             }
-            return post;
+
         }
     }
 }

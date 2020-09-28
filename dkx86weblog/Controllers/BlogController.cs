@@ -19,7 +19,7 @@ namespace dkx86weblog.Controllers
         // GET: Blog
         public async Task<IActionResult> Index(int page = 1)
         {
-            var posts =  await _service.GetPublishedPostsAsync(page);
+            var posts = await _service.GetPublishedPostsAsync(page);
             return View(posts);
         }
 
@@ -53,12 +53,11 @@ namespace dkx86weblog.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            var post = new Post();
-            var newPostId = await _service.CreatePostAsync(post);
-            return RedirectToAction(nameof(Edit), new { id = newPostId });
+            var post = await _service.CreatePostAsync();
+            return RedirectToAction(nameof(Edit), new { id = post.ID });
         }
 
-        
+
         // GET: Blog/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(Guid? id)
@@ -92,7 +91,7 @@ namespace dkx86weblog.Controllers
 
             if (ModelState.IsValid)
             {
-                if(await _service.EditPostAsync(id, post) == null)
+                if (await _service.EditPostAsync(id, post) == null)
                     return NotFound();
 
                 ViewData["lastSavedDate"] = DateTime.Now;
@@ -133,7 +132,7 @@ namespace dkx86weblog.Controllers
         public async Task<IActionResult> Publish(Guid? id)
         {
             await _service.SwitchPublishStateAsync(id, true);
-            
+
             return RedirectToAction(nameof(Manage));
         }
 
