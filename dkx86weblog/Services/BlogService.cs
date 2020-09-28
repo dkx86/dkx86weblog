@@ -14,9 +14,9 @@ namespace dkx86weblog.Services
     {
 
         protected readonly ApplicationDbContext _context;
-        protected readonly ILogger _logger;
+        protected readonly ILogger<BlogService> _logger;
 
-        public BlogService(ApplicationDbContext context, ILogger logger)
+        public BlogService(ApplicationDbContext context, ILogger<BlogService> logger)
         {
             _logger = logger;
             _context = context;

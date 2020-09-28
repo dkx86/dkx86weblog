@@ -68,16 +68,16 @@ namespace dkx86weblog.Controllers
 
         [ResponseCache(Duration = 1200)]
         [HttpGet]
-        public async Task<IActionResult> RssPhoto()
+        public async Task<IActionResult> RssPhotoFeed()
         {
             var request = _httpContextAccessor.HttpContext.Request;
             var hostname = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
 
-            var feed = new SyndicationFeed("「 dkx86・weblog 」", "IT・Photography・Otaku Culture", new Uri(hostname), hostname + "/Home/RssPhoto", DateTime.Now);
+            var feed = new SyndicationFeed("「 dkx86・weblog・photo 」", "IT・Photography・Otaku Culture", new Uri(hostname), hostname + "/Home/RssPhotoFeed", DateTime.Now);
             feed.Copyright = new TextSyndicationContent($"{DateTime.Now.Year} Dmitry Kuznetsov aka 「dkx86」");
 
             var items = new List<SyndicationItem>();
-            items.AddRange(await GetPhotos());
+            items.AddRange(await GetPhotosForFeed());
             feed.Items = items.OrderByDescending(i => i.PublishDate);
 
             return WriteRssToFile(feed);
@@ -123,6 +123,31 @@ namespace dkx86weblog.Controllers
                 {
                     title += photo.Time;
                 }
+                var syndicationItem = new SyndicationItem(title, description, new Uri(photoUrl), photo.ID.ToString(), photo.Time);
+                syndicationItem.PublishDate = photo.Time;
+                syndicationItem.ElementExtensions.Add(new XElement("enclosure", new XAttribute("type", "image/jpeg"), new XAttribute("url", "/photos/" + photo.GetPreviewFileName())).CreateReader());
+
+                items.Add(syndicationItem);
+            }
+            return items;
+        }
+
+        private async Task<List<SyndicationItem>> GetPhotosForFeed()
+        {
+            List<SyndicationItem> items = new List<SyndicationItem>();
+            var photos = await _photoService.ListPhotosForRssAsync(RSS_PHOTO_FEED_SIZE);
+            foreach (var photo in photos)
+            {
+                var photoUrl = Url.Action(photo.FileName, "photos", null, HttpContext.Request.Scheme);
+                    //Url.Action("Details", "Photo", new { id = photo.ID }, HttpContext.Request.Scheme);
+                var title = string.Empty;
+                var description = string.Empty;
+                if (photo.Title != null)
+                {
+                    title = photo.Title;
+                    description = photo.Title;
+                }
+                
                 var syndicationItem = new SyndicationItem(title, description, new Uri(photoUrl), photo.ID.ToString(), photo.Time);
                 syndicationItem.PublishDate = photo.Time;
                 syndicationItem.ElementExtensions.Add(new XElement("enclosure", new XAttribute("type", "image/jpeg"), new XAttribute("url", "/photos/" + photo.GetPreviewFileName())).CreateReader());
