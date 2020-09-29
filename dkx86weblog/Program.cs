@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 using System;
 
 namespace dkx86weblog
@@ -12,24 +13,37 @@ namespace dkx86weblog
     {
         public static void Main(string[] args)
         {
+            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             IHost host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
+                logger.Info("--> init main");
                 var services = scope.ServiceProvider;
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.Migrate();
+                    logger.Info("--> DB migrated");
+                    host.Run();
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while migrating the DB.");
+                    // var logger = services.GetRequiredService<ILogger<Program>>();
+                    //logger.LogError(ex, "An error occurred while migrating the DB.");
+                    logger.Error(ex, "An error occurred while migrating the DB.");
+                    throw;
+                }
+                finally
+                {
+                    // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+                    NLog.LogManager.Shutdown();
                 }
             }
 
-            host.Run();
+            
         }
+
+
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
@@ -40,6 +54,10 @@ namespace dkx86weblog
                         options.Limits.MaxRequestBodySize = 536_870_912;
                     })
                     .UseStartup<Startup>();
-                });
+                }).ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Trace);
+                }).UseNLog();  // NLog: Setup NLog for Dependency injection
     }
 }

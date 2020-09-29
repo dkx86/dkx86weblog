@@ -2,6 +2,7 @@
 using dkx86weblog.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,9 +19,11 @@ namespace dkx86weblog.Services
         private readonly ApplicationDbContext _context;
         private readonly ImageService _imageService;
         private readonly FileSystemService _filesystemService;
+        private readonly ILogger<DigitalPackagesService> _logger;
 
-        public DigitalPackagesService(ApplicationDbContext context, ImageService imageService, FileSystemService filesystemService)
+        public DigitalPackagesService(ApplicationDbContext context, ImageService imageService, FileSystemService filesystemService, ILogger<DigitalPackagesService> logger)
         {
+            _logger = logger;
             _context = context;
             _imageService = imageService;
             _filesystemService = filesystemService;
@@ -44,9 +47,16 @@ namespace dkx86weblog.Services
             package.PackageFileName = Path.GetFileName(packageFile.FileName);
             package.PreviewFileName = previewFileName;
             package.FileSize = packageFileSize;
-            
-            _context.Add(package);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                _context.Add(package);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                _logger.LogError(e.Message, e);
+            }
         }
 
         internal async Task<List<DigitalPackage>> ListPackagesForRssAsync(int itemsCount)
@@ -78,11 +88,12 @@ namespace dkx86weblog.Services
                 package.Title = updatedPackage.Title;
                 package.Description = updatedPackage.Description;
                 package.FileType = updatedPackage.FileType;
-                _context.Update(package);
+
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
+                _logger.LogError(e.Message, e);
                 return null;
             }
             return package;
@@ -92,24 +103,33 @@ namespace dkx86weblog.Services
         {
             var package = await FindPackageAsync(id);
             if (package == null)
+            {
+                _logger.LogError("Package {ID} not found!", id);
                 return;
+            }
+            try
+            {
+                _context.DigitalPackage.Remove(package);
+                await _context.SaveChangesAsync();
 
-            _context.DigitalPackage.Remove(package);
-            await _context.SaveChangesAsync();
-            _filesystemService.RemoveFileFromServer(package.PackageFileName, PACKAGES_DIR_NAME);
-            _filesystemService.RemoveFileFromServer(package.PreviewFileName, PACKAGES_DIR_NAME);
+                _filesystemService.RemoveFileFromServer(package.PackageFileName, PACKAGES_DIR_NAME);
+                _filesystemService.RemoveFileFromServer(package.PreviewFileName, PACKAGES_DIR_NAME);
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                _logger.LogError(e.Message, e);
+            }
         }
 
         internal async Task<DigitalPackage> FindPackageAsync(Guid? id)
         {
             if (id == null)
+            {
+                _logger.LogError("Package {ID} not found!", id);
                 return null;
+            }
             return await _context.DigitalPackage.FirstOrDefaultAsync(p => p.ID == id);
         }
 
-        private bool DigitalPackageExists(Guid id)
-        {
-            return _context.DigitalPackage.Any(e => e.ID == id);
-        }
     }
 }

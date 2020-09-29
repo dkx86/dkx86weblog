@@ -1,12 +1,10 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
+﻿using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using SixLabors.ImageSharp.Processing;
-using SQLitePCL;
-using System;
 using System.IO;
 
 namespace dkx86weblog.Services
@@ -25,6 +23,12 @@ namespace dkx86weblog.Services
     public class ImageService
     {
         private readonly int JPG_QUALITY = 95;
+        private readonly ILogger<ImageService> _logger;
+
+        public ImageService(ILogger<ImageService> logger)
+        {
+            _logger = logger;
+        }
 
         public ImageResizeResult Resize(string inputFile, string outputFile, int longEdgeSize)
         {
@@ -32,9 +36,11 @@ namespace dkx86weblog.Services
             {
                 ImageResizeResult resizeResult = new ImageResizeResult(image.Height, image.Width);
 
-                if (!NeedResize(image, longEdgeSize))
+                if (!NeedResize(image, longEdgeSize)) {
+                    SaveMutatedImage(outputFile, image, format);
                     return resizeResult;
-
+                }
+                    
                 int width = 0;
                 int height = 0;
                 if (image.Width > image.Height)
@@ -58,7 +64,6 @@ namespace dkx86weblog.Services
 
         internal ImageMetadata GetImageMetadata(string inputFile)
         {
-
             using (Image image = Image.Load(inputFile))
             {
                 ImageMetadata imageMetadata = new ImageMetadata();
