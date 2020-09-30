@@ -65,9 +65,9 @@ namespace dkx86weblog.Controllers
             return WriteRssToFile(feed);
         }
 
-        [ResponseCache(Duration = 1200)]
+        [ResponseCache(Duration = 300)]
         [HttpGet]
-        public async Task<IActionResult> RssPhotoFeed()
+        public async Task<IActionResult> RssPhoto()
         {
             var request = _httpContextAccessor.HttpContext.Request;
             var hostname = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
@@ -76,7 +76,7 @@ namespace dkx86weblog.Controllers
             feed.Copyright = new TextSyndicationContent($"{DateTime.Now.Year} Dmitry Kuznetsov aka 「dkx86」");
 
             var items = new List<SyndicationItem>();
-            items.AddRange(await GetPhotosForFeed());
+            items.AddRange(await GetPhotos());
             feed.Items = items.OrderByDescending(i => i.PublishDate);
 
             return WriteRssToFile(feed);
@@ -131,30 +131,7 @@ namespace dkx86weblog.Controllers
             return items;
         }
 
-        private async Task<List<SyndicationItem>> GetPhotosForFeed()
-        {
-            List<SyndicationItem> items = new List<SyndicationItem>();
-            var photos = await _photoService.ListPhotosForRssAsync(RSS_PHOTO_FEED_SIZE);
-            foreach (var photo in photos)
-            {
-                var photoUrl = Url.Action(photo.FileName, "photos", null, HttpContext.Request.Scheme);
-                var title = string.Empty;
-                var description = string.Empty;
-                if (photo.Title != null)
-                {
-                    title = photo.Title;
-                    description = photo.Title;
-                }
-                
-                var syndicationItem = new SyndicationItem(title, description, new Uri(photoUrl), photo.ID.ToString(), photo.Time);
-                syndicationItem.PublishDate = photo.Time;
-                syndicationItem.ElementExtensions.Add(new XElement("enclosure", new XAttribute("type", "image/jpeg"), new XAttribute("url", "/photos/" + photo.GetPreviewFileName())).CreateReader());
-
-                items.Add(syndicationItem);
-            }
-            return items;
-        }
-
+   
         private async Task<List<SyndicationItem>> GetBlogPosts()
         {
             List<SyndicationItem> items = new List<SyndicationItem>();
