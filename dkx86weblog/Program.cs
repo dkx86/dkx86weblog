@@ -6,14 +6,26 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace dkx86weblog
 {
     public class Program
     {
+
+        private static NLog.Logger ConfigLogger()
+        {
+            var pathToBin = Process.GetCurrentProcess().MainModule.FileName;
+            var pathToContentRoot = Path.GetDirectoryName(pathToBin);
+            NLog.LogManager.LogFactory.SetCandidateConfigFilePaths(new List<string> { $"{Path.Combine(pathToContentRoot, "nlog.config")}" });
+            return NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            //return NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger(); 
+        }
         public static void Main(string[] args)
         {
-            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            var logger = ConfigLogger();
             IHost host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
@@ -40,7 +52,6 @@ namespace dkx86weblog
                 }
             }
 
-            
         }
 
 
