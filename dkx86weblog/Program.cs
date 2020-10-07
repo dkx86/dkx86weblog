@@ -23,6 +23,7 @@ namespace dkx86weblog
             return NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             //return NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger(); 
         }
+
         public static void Main(string[] args)
         {
             var logger = ConfigLogger();

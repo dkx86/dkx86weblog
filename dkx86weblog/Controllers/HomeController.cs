@@ -111,16 +111,12 @@ namespace dkx86weblog.Controllers
             foreach (var photo in photos)
             {
                 var photoUrl = Url.Action("Details", "Photo", new { id = photo.ID }, HttpContext.Request.Scheme);
-                var title = "Photo: ";
+                var title = string.Empty;
                 var description = string.Empty;
-                if(photo.Title != null)
+                if (photo.Title != null)
                 {
-                    title += photo.Title;
+                    title = photo.Title;
                     description = photo.Title;
-                }
-                else
-                {
-                    title += photo.Time;
                 }
                 var syndicationItem = new SyndicationItem(title, description, new Uri(photoUrl), photo.ID.ToString(), photo.Time);
                 syndicationItem.PublishDate = photo.Time;
