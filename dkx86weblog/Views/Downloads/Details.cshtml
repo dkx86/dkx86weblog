@@ -2,13 +2,16 @@
 
 @{
     ViewData["Title"] = Model.Title;
+    ViewData["SNS_Image"] = "/downloads/" + @Model.PreviewFileName;
 }
+
 
 <div class="row ">
     <div class="col-sm-12 col-md-10 m-auto">
         <div class="card border-0">
             <div class="row no-gutters">
                 <div class="col-md-4">
+                    @await Html.PartialAsync("_SocialButtonsPartial")
                     <img src="~/downloads/@Model.PreviewFileName" class="card-img ">
                 </div>
                 <div class="col-md-8">
