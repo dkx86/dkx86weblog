@@ -18,9 +18,12 @@
     <h1 class="col-12 mb-2">@Model.Title</h1>
 </div>
 
+@await Html.PartialAsync("_SocialButtonsPartial")
+
 <div class="row">
     <hr />
     <div class="col-12 text-dark p-3 post_body">
         @Html.Raw(@Model.Body)
     </div>
 </div>
+

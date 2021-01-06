@@ -2,15 +2,14 @@
 
 @{
     ViewData["Title"] = (string.IsNullOrEmpty(Model.Title)) ? "Photo Details" : Model.Title;
+    ViewData["SNS_Image"] = "/photos/" + @Model.GetPreviewFileName();
 }
 
-
+@await Html.PartialAsync("_SocialButtonsPartial")
 
 <div class="row">
     <div class="col text-center ">
-        <a href="#photo">
-            <img src="~/photos/@Model.GetPreviewFileName()" class="img-fluid" />
-        </a>
+        <img src="~/photos/@Model.GetPreviewFileName()" class="img-fluid" />
     </div>
 </div>
 
@@ -20,7 +19,15 @@
     <p class="col-12">@Html.DisplayFor(model => model.Title)</p>
 </div>
 
+
 <hr />
+
+<div class="row mb-3">
+    <p class="col-12">
+        <a href="~/photos/@Model.FileName" class="btn btn-sm  btn-dark">View full size @Html.DisplayFor(model => model.FullSizeDemensions)</a>
+    </p>
+</div>
+
 
 <dl class="row text-secondary">
 
@@ -61,15 +68,3 @@
     </dd>
 </dl>
 
-<div class="row text-right">
-    <p class="col-12">
-        <a href="~/photos/@Model.FileName" class="btn btn-dark">View full size @Html.DisplayFor(model => model.FullSizeDemensions)</a>
-    </p>
-</div>
-
-
-<div class="JesterBox">
-    <div id="photo" class="JesterBoxDiv">
-        <img src="~/photos/@Model.GetPreviewFileName()" onClick="history.go(-1);" alt="@Model.Title" title="@Model.Title" />
-    </div>
-</div>

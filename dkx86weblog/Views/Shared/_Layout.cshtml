@@ -21,13 +21,13 @@
     <meta property="og:title" content="@ViewData["Title"] - dkx86・weblog">
     <meta property="og:site_name" content="dkx86.ru">
     <meta property="og:description" content="IT・Photography・Otaku Culture">
+    <meta property="og:image" content="@ViewData["SNS_Image"]" />
     @* == FOR SNS END ==*@
 
 
     <title>@ViewData["Title"] - dkx86・weblog</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/jester_box.css" />
     <link rel="stylesheet" href="~/css/glitch.css" />
     <script type="text/javascript">
         function getMail() {
@@ -35,7 +35,7 @@
             window.location.href = link;
         }
     </script>
-
+    <script type="text/javascript" src="https://vk.com/js/api/share.js?95" charset="windows-1251"></script>
 </head>
 <body >
     <header>
@@ -64,7 +64,6 @@
                             <div class="dropdown-menu bg-light ">
                                 <a class="dropdown-item text-dark bg-light glitch" href="https://vk.com/dkx86" target="_blank">VK</a>
                                 <a class="dropdown-item text-dark bg-light glitch" href="https://www.behance.net/dkx86" target="_blank">Behance</a>
-                                <a class="dropdown-item text-dark bg-light glitch" href="https://www.pinterest.ru/dkx86" target="_blank">Pinterest</a>
                                 <a class="dropdown-item text-dark bg-light glitch" href="https://github.com/dkx86" target="_blank">GitHub</a>
                                 <a class="dropdown-item text-dark bg-light glitch" href="http://youtube.com/c/DmitryKuznetsov" target="_blank">YouTube</a>
                                 <a class="dropdown-item text-dark bg-light glitch" href="#" rel="nofollow" onClick="getMail();">E-mail</a>
@@ -87,7 +86,7 @@
             
             <div class="row">
                 <small class="col-12 text-wrap">
-                    &copy; 2020 - Dmitry Kuznetsov aka 「dkx86」
+                    &copy; 2020-2021 - Dmitry Kuznetsov aka 「dkx86」
                     <a class="" asp-area="" asp-controller="Home" target="_blank" asp-action="Rss">
                         <img src="~/rss.gif" alt="RSS feed" title="RSS feed" />
                     </a>
