@@ -9,9 +9,7 @@
 
 <div class="row">
     <div class="col text-center ">
-        <a href="#photo">
-            <img src="~/photos/@Model.GetPreviewFileName()" class="img-fluid" />
-        </a>
+        <img src="~/photos/@Model.GetPreviewFileName()" class="img-fluid" />
     </div>
 </div>
 
@@ -69,14 +67,4 @@
         @Html.DisplayFor(model => model.FocalLength)
     </dd>
 </dl>
-
-
-
-
-<div class="JesterBox">
-    <div id="photo" class="JesterBoxDiv">
-        <img src="~/photos/@Model.GetPreviewFileName()" onClick="history.go(-1);" alt="@Model.Title" title="@Model.Title" />
-    </div>
-</div>
-
 
