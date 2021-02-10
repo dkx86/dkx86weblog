@@ -16,7 +16,7 @@ namespace dkx86weblog.Models
         [DataType(DataType.DateTime)]
         public DateTime UpdateTime { get; set; }
 
-        [StringLength(64)]
+        [StringLength(128)]
         public string Title { get; set; }
 
         [Column(TypeName = "text")]
