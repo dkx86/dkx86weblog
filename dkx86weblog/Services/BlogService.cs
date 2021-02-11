@@ -21,6 +21,11 @@ namespace dkx86weblog.Services
             _context = context;
         }
 
+        internal async Task<List<Post>> GetLastPublishedPostsAsync(int count)
+        {
+            var itemsAll = _context.Post.Where(p => p.Published).OrderByDescending(p => p.CreateTime);
+            return await itemsAll.Take(count).ToListAsync();
+        }
 
         internal async Task<BlogViewModel> GetPublishedPostsAsync(int page)
         {

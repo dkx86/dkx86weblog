@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="~/lib/prism/prism.css" />
     <script type="text/javascript">
         function getMail() {
-            link = "znvygb:qxk86@bhgybbx.pbz".replace(/[a-zA-Z]/g, function (c) { return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26); });
+            link = "znvygb:qxk86@znvy.eh".replace(/[a-zA-Z]/g, function (c) { return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26); });
             window.location.href = link;
         }
     </script>
@@ -54,7 +54,8 @@
                             <a class="nav-link text-dark glitch" asp-area="" asp-controller="Blog" asp-action="Index">BLOG</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark glitch" asp-area="" asp-controller="Photo" asp-action="Index">PHOTO</a>
+                            @*<a class="nav-link text-dark glitch" asp-area="" asp-controller="Photo" asp-action="Index">PHOTO</a>*@
+                            <a class="nav-link text-dark glitch" href="http://dkx86.photos">PHOTO</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark glitch" asp-area="" asp-controller="Downloads" asp-action="Index">DONWLOADS</a>
@@ -64,9 +65,8 @@
                             <a class="nav-link  text-dark dropdown-toggle glitch" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">SNS</a>
                             <div class="dropdown-menu bg-light ">
                                 <a class="dropdown-item text-dark bg-light glitch" href="https://vk.com/dkx86" target="_blank">VK</a>
-                                <a class="dropdown-item text-dark bg-light glitch" href="https://www.behance.net/dkx86" target="_blank">Behance</a>
                                 <a class="dropdown-item text-dark bg-light glitch" href="https://github.com/dkx86" target="_blank">GitHub</a>
-                                <a class="dropdown-item text-dark bg-light glitch" href="http://youtube.com/c/DmitryKuznetsov" target="_blank">YouTube</a>
+                                <a class="dropdown-item text-dark bg-light glitch" href="https://www.behance.net/dkx86" target="_blank">Behance</a>
                                 <a class="dropdown-item text-dark bg-light glitch" href="#" rel="nofollow" onClick="getMail();">E-mail</a>
 
                             </div>

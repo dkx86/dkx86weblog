@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<dkx86weblog.Models.Post>
+
+@{
     ViewData["Title"] = "Home";
 }
 
@@ -19,9 +21,6 @@
             <a href="https://vk.com/dkx86" target="_blank" class="p-2 btn">
                 <img src="~/vk.png" class="glitchImage" />
             </a>
-            <a href="https://www.behance.net/dkx86" target="_blank" class="p-2 btn">
-                <img src="~/be.png" class="glitchImage" />
-            </a>
             <a href="https://github.com/dkx86" target="_blank" class="p-2 btn">
                 <img src="~/git.png" class="glitchImage" />
             </a>
@@ -30,4 +29,28 @@
             </a>
         </div>
     </div>
+</div>
+
+<!------------------------------------------- LAST POSTS ---------------------------------------------->
+
+
+<div class="row row-cols-1 mt-5">
+    <div class="col">
+        @foreach (var item in Model)
+        {
+
+            <div class="card nrw-card-bg mb-4">
+                <div class="card-body glitchPost">
+                    <h6 class="card-subtitle small mb-2 text-muted">@item.CreateTime</h6>
+                    <h4 class="card-title ml-2 mb-4 glitchTitle">@item.Title</h4>
+                    <p class="card-text post_body ml-2">@item.GetPreview()</p>
+                    <a asp-action="Post" asp-route-id="@item.ID" class="card-link stretched-link"></a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="d-flex flex-row-reverse m-2">
+    <a class="btn btn-dark col-sm-1 col-md-2 " asp-area="" asp-controller="Blog" asp-action="Index">Read more</a>
 </div>
