@@ -8,7 +8,7 @@
     <!--------------------------------------Avatar and title --------------------------------------->
     <div class="row">
         <div class="text-center col-12">
-            <img src="userpic.jpg" class="rounded-circle" />
+            <img src="userpic.png" class="rounded-circle glitchImage" />
             <h3>Dmitry Kuznetsov</h3>
             <small>IT・Photography・Otaku Culture</small>
         </div>
@@ -44,7 +44,7 @@
                     <h6 class="card-subtitle small mb-2 text-muted">@item.CreateTime</h6>
                     <h4 class="card-title ml-2 mb-4 glitchTitle">@item.Title</h4>
                     <p class="card-text post_body ml-2">@item.GetPreview()</p>
-                    <a asp-action="Post" asp-route-id="@item.ID" class="card-link stretched-link"></a>
+                    <a asp-controller="Blog" asp-action="Post" asp-route-id="@item.ID" class="card-link stretched-link"></a>
                 </div>
             </div>
         }
