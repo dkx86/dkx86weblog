@@ -32,7 +32,8 @@ namespace dkx86weblog
             //string connectionString = Configuration.GetConnectionString("DefaultConnection"); //LOCAL DEV
             string connectionString = Configuration.GetConnectionString("PgsqlConnection"); // Production
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
-
+            
+            //services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -51,7 +52,7 @@ namespace dkx86weblog
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {
